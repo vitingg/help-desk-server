@@ -20,8 +20,3 @@ export const createUserSchema = z.object({
     .min(6, { message: "A senha deve ter no mínimo 6 caracteres" })
     .nonempty("A senha é obrigatória"),
 });
-
-export const loginUserSchema = z.object({
-  username: z.string(),
-  password: z.string(),
-});

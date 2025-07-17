@@ -1,18 +1,16 @@
 import express from "express";
-import {
-  createUserClient,
-  getAllClients,
-} from "./controller/client-controller";
-import { createUserTech, getAllTechs } from "./controller/tech-controller";
+import { createClient, getClients } from "./controller/client-controller";
+import { createTech, getTechs } from "./controller/tech-controller";
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 
-app.post("/", createUserClient);
-app.get("/", getAllClients);
-app.post("/tech", createUserTech);
-app.get("/tech", getAllTechs);
+app.post("/", createClient);
+app.get("/", getClients);
+
+app.post("/tech", createTech);
+app.get("/techs", getTechs);
 
 app.listen(port, () => console.log(`App listening on port ${port}`));

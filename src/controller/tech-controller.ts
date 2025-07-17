@@ -1,26 +1,24 @@
 import { Request, Response, NextFunction } from "express";
-import { userTechServices } from "../service/tech-service";
+import { userServices } from "../service/user-service";
 import { prisma } from "../lib/prisma";
 
-// Criar conta do tipo técnico exige um middleware de verificação de quem está criando a conta
-// Visto que somente admin pode criar conta de técnico
-
-export const createUserTech = async (req: Request, res: Response) => {
+export const createTech = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
-    const newUser = await userTechServices.createUser({
+    const newUser = await userServices.createTechUser({
       username,
       email,
       password,
     });
+
     res.status(201).json(newUser);
   } catch (error) {
     console.log("Erro ao criar o usuário");
-    res.status(500).json({ error: error });
+    res.status(500).json({ error: "Erro na controller do cliente" + error });
   }
 };
 
-export const getAllTechs = async (
+export const getTechs = async (
   req: Request,
   res: Response,
   next: NextFunction

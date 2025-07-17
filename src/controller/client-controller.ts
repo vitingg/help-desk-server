@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { PrismaClient } from "@prisma/client";
-import { userClientService } from "../service/client-service";
+import { userServices } from "../service/user-service";
 import { prisma } from "../lib/prisma";
 
-export const createUserClient = async (req: Request, res: Response) => {
+export const createClient = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
-    const newUser = await userClientService.createUser({
+    const newUser = await userServices.createClientUser({
       username,
       email,
       password,
@@ -19,7 +18,7 @@ export const createUserClient = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllClients = async (
+export const getClients = async (
   req: Request,
   res: Response,
   next: NextFunction

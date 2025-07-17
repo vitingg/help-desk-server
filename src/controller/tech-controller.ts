@@ -1,28 +1,26 @@
 import { Request, Response, NextFunction } from "express";
-import { PrismaClient } from "@prisma/client";
-import { userClientService } from "../../service/user-client-service";
-import {prisma } from "../../lib/prisma"
+import { userTechServices } from "../service/tech-service";
+import { prisma } from "../lib/prisma";
 
-export const createUserClient = async (
-  req: Request,
-  res: Response,
-) => {
+// Criar conta do tipo técnico exige um middleware de verificação de quem está criando a conta
+// Visto que somente admin pode criar conta de técnico
+
+export const createUserTech = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
-    const newUser = await userClientService.createUser({
+    const newUser = await userTechServices.createUser({
       username,
       email,
       password,
     });
-
     res.status(201).json(newUser);
   } catch (error) {
     console.log("Erro ao criar o usuário");
-    res.status(500).json({ error: "Erro na controler do cliente" + error });
+    res.status(500).json({ error: error });
   }
 };
 
-export const getAllClients = async (
+export const getAllTechs = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -30,7 +28,7 @@ export const getAllClients = async (
   try {
     const users = await prisma.user.findMany({
       where: {
-        role: "CLIENT",
+        role: "TECH",
       },
     });
     res.status(200).json(users);

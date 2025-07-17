@@ -1,6 +1,6 @@
 import { prisma } from "../lib/prisma";
 
-import type { CreateUserInput } from "../service/user-client-service";
+import type { CreateUserInput } from "../service/client-service";
 
 export const userClientRepository = {
   create: async ({ username, email, password }: CreateUserInput) => {
@@ -17,6 +17,8 @@ export const userClientRepository = {
     return prisma.user.findMany({
       where: {
         email,
+        // email tem que ser igual email do user que esteja tentado criar a conta
+        // provavelmente where email: user.email
       },
     });
   },

@@ -11,10 +11,12 @@
   "description": "Projeto backend do help-desk",
   "dependencies": {
     "@prisma/client": "^6.11.1",
+    "bcrypt": "^6.0.0",
     "express": "^5.1.0",
     "zod": "^4.0.5"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.3",
     "@types/node": "^24.0.12",
     "prisma": "^6.11.1",

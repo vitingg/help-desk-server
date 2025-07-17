@@ -2,11 +2,8 @@ import express from "express";
 import {
   createUserClient,
   getAllClients,
-} from "./controller/users/user-client-controller";
-import {
-  createUserTech,
-  getAllTechs,
-} from "./controller/users/user-tech-controller";
+} from "./controller/client-controller";
+import { createUserTech, getAllTechs } from "./controller/tech-controller";
 
 const app = express();
 const port = 3000;

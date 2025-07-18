@@ -10,7 +10,6 @@ export interface CreateUserInput {
 export const userServices = {
   createClientUser: async ({ username, email, password }: CreateUserInput) => {
     const existingUser = await userRepository.findByEmail(email);
-
     if (existingUser) {
       throw new Error("Este e-mail já esta em uso!");
     }

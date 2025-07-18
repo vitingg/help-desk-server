@@ -14,7 +14,10 @@ export const createUserSchema = z.object({
         })
         .join(" ");
     }),
-  email: z.email().min(5).nonempty("O email é obrigatório"),
+  email: z
+    .email({ message: "Insira um e-mail válido" })
+    .min(5)
+    .nonempty("O email é obrigatório"),
   password: z
     .string()
     .min(6, { message: "A senha deve ter no mínimo 6 caracteres" })

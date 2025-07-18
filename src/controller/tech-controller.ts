@@ -35,3 +35,5 @@ export const getTechs = async (
     res.status(500).json({ error: error });
   }
 };
+
+

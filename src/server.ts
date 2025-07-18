@@ -1,16 +1,13 @@
 import express from "express";
-import { createClient, getClients } from "./controller/client-controller";
-import { createTech, getTechs } from "./controller/tech-controller";
+import userRoutes from "./routes/client-routes";
+import techRoutes from "./routes/tech-routes";
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 
-app.post("/", createClient);
-app.get("/", getClients);
-
-app.post("/tech", createTech);
-app.get("/techs", getTechs);
+app.use("/", userRoutes);
+app.use("/", techRoutes);
 
 app.listen(port, () => console.log(`App listening on port ${port}`));

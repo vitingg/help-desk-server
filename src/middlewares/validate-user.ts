@@ -1,15 +1,19 @@
-import type { NextFunction } from "express";
-import { createUserSchema } from "../schemas-zod/schemas";
-import { ZodError } from "zod";
+import { Request, Response, NextFunction } from "express";
+import { ZodError, ZodSchema } from "zod";
 
-const validateUser = (req: Request, res: Response, next: NextFunction) => {
-  try {
-    createUserSchema.parse(req.body);
-    next();
-  } catch (error) {
-    console.log(error);
-    if (error instanceof ZodError) {
-      console.log("este erro é instância do zod");
+export const validateUser =
+  (schema: ZodSchema) => (req: Request, res: Response, next: NextFunction) => {
+    try {
+      req.body = schema.parse(req.body);
+      next();
+    } catch (error) {
+      console.log(error);
+      if (error instanceof ZodError) {
+        res.status(400).json({
+          message: "Erro!",
+          error: error.format(),
+        });
+        return;
+      }
     }
-  }
-};
+  };

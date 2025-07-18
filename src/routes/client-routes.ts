@@ -1,9 +1,9 @@
 import { createClient, getClients } from "../controller/client-controller";
-import { app } from "../lib/app-express";
 import { validateUser } from "../middlewares/validate-user";
-import { createUserSchema } from "../schemas-zod/schemas";
+import { signUpSchema } from "../schemas-zod/schemas";
+import { app } from "../lib/app-express";
 
-app.post("/", validateUser(createUserSchema), createClient);
+app.post("/", validateUser(signUpSchema), createClient);
 app.get("/", getClients);
 
 export default app;

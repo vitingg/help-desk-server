@@ -1,10 +1,10 @@
 import z from "zod";
 
-export const createUserSchema = z.object({
+export const signUpSchema = z.object({
   username: z
-    .string()
-    .min(4, { message: "O nome deverá ter no mínimo 4 caracteres" })
-    .nonempty("O nome é obrigatório")
+    .string({ message: "Enter a valid username." })
+    .min(4, { message: "Username need to be more thann 4 characters." })
+    .nonempty("Username is obligatory.")
     .transform((username) => {
       return username
         .trim()
@@ -15,11 +15,18 @@ export const createUserSchema = z.object({
         .join(" ");
     }),
   email: z
-    .email({ message: "Insira um e-mail válido" })
+    .email({ message: "Enter a valid email." })
     .min(5)
-    .nonempty("O email é obrigatório"),
+    .nonempty("Email is obligatory."),
   password: z
     .string()
-    .min(6, { message: "A senha deve ter no mínimo 6 caracteres" })
-    .nonempty("A senha é obrigatória"),
+    .min(6, { message: "Password need to be more than 6 characters." })
+    .nonempty("Password is obligatory."),
+});
+
+export const signInSchema = z.object({
+  email: z.string().email({ message: "Enter a valid email." }),
+  password: z
+    .string()
+    .min(6, { message: "Password need to be more than 6 characters." }),
 });

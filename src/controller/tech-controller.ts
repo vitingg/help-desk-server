@@ -4,11 +4,13 @@ import { prisma } from "../lib/prisma";
 
 export const createTech = async (req: Request, res: Response) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, workHours } = req.body;
+
     const newUser = await userServices.createTechUser({
       username,
       email,
       password,
+      workHours,
     });
 
     res.status(201).json(newUser);

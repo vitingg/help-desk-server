@@ -24,6 +24,15 @@ model User {
   
   servicesAsClient Service[] @relation("ClientServices")
   servicesAsTech Service[] @relation("TechServices")
+
+  workHours WorkHours?
+}
+
+model WorkHours {
+  id        Int      @id @default(autoincrement())
+  workTime  String[]
+  tech      User     @relation(fields: [techId], references: [id])
+  techId    Int      @unique
 }
 
 enum ServiceStatus {

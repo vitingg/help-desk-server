@@ -8,6 +8,13 @@ export interface CreateUserInput {
   password: string;
 }
 
+export interface CreateTechUserInput {
+  username?: string;
+  email: string;
+  password: string;
+  workHours: string[];
+}
+
 export const userServices = {
   createClientUser: async ({ username, email, password }: CreateUserInput) => {
     const existingUser = await userRepository.findByEmail(email);
@@ -21,6 +28,35 @@ export const userServices = {
       username,
       email,
       password: hashedPassword,
+    });
+
+    return newUser;
+  },
+
+  createTechUser: async ({
+    username,
+    email,
+    password,
+    workHours,
+  }: CreateTechUserInput) => {
+    const existingUser = await userRepository.findByEmail(email);
+
+    if (existingUser) {
+      throw new Error("Email already in use!");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await userRepository.create({
+      username,
+      email,
+      password: hashedPassword,
+      role: "TECH",
+      workHours: {
+        create: {
+          workTime: workHours,
+        },
+      },
     });
 
     return newUser;
@@ -46,24 +82,5 @@ export const userServices = {
     return {
       token,
     };
-  },
-
-  createTechUser: async ({ username, email, password }: CreateUserInput) => {
-    const existingUser = await userRepository.findByEmail(email);
-
-    if (existingUser) {
-      throw new Error("Email already in use!");
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = await userRepository.create({
-      username,
-      email,
-      password: hashedPassword,
-      role: "TECH",
-    });
-
-    return newUser;
   },
 };

@@ -46,11 +46,25 @@ id Int @id @default(autoincrement())
 title String
 description String
 status ServiceStatus @default(PENDING)
+
 clientId Int
 techId Int
+
+categoryId   Int
+category     Category  @relation(fields: [categoryId], references: [id])
+basePrice    Decimal
+
 createdAt DateTime @default(now())
 updatedAt DateTime @updatedAt
 
 client User @relation("ClientServices", fields: [clientId], references: [id])
 tech User @relation("TechServices", fields: [techId], references: [id])
+}
+
+// Categorias responsáveis por dar preço aos serviços.
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String
+  basePrice Decimal
+  services  Service[]
 }

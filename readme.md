@@ -1,20 +1,21 @@
 ## Arquitetura do Projeto
 
-=> routes: responsável por mapear a URL que leva a uma ação.
+**Routes**: Responsável por mapear a URL que para um ação.<br/>
 
-=> controllers: responsável apenas por pegar os dados da requisição e passar para outra função do projeto que realmente sabe o que fazer com eles, que seria então os services.
+**Controllers**: responsável APENAS por pegar os dados da requisição e passar pra outra função do projeto que realmente sabe o que fazer com eles, que seria então, os Services. <br/>
 
-=> services: contém a regra de negócio. Ele recebe os dados (mas não diretamente o request e response — aliás, ele nem sabe o que é isso), processa e devolve um resultado. </br>
-Exemplo de regra de negócio: encriptar a senha, verificar se o e-mail já existe.
-Observação: Não pode acessar o banco de dados.
+**Services**: Cóntem a regra de negócio, ele recebe os dados do controller, processa e devolve um resultado. <br/>
+Exemplo de regra de negócio: Encryptar a senha, verificar se email já existe, e entre outros. <br/>
+Ponto de atenção: Não é responsável por acessar o banco de dados. <br/>
 
-=> middlewares: responsáveis pela autenticação e verificação dos dados. Utilizar o Zod para manter os dados sempre limpos. Também é responsável por validar o token JWT do usuário antes de, por exemplo, realizar um POST.
+**Middlewares**: Responsáveis pela autenticação e verificação dos dados, utilizar o zod para manter os dados sempre limpos, responsável tambem por validar o JWT token do usuario, antes de fazer um sign-in por exemplo.<br/>
 
-=> repositories: responsável pela conexão com o banco de dados, sendo quem busca os dados e os leva ao service, fornecendo o que é necessário para montar a response. </br>
-Observação: Ele tem que ser ligado ao banco de dados. Se houver qualquer método do Prisma fora dele, está errado.
+**Repositories**: Responsável pela conexão do database na qual busca e leva ao service o que precisa pra entregar a response.<br/>
+Ponto de atenção: Único responsável pela conexão do database, se algo relacionado a métodos do prisma fora dele, está errado.
 
 ===========================================================================
 
 ## Próximas etapas:
 
 => JWT token
+=> criei tabela no schema de categorias, consumida no front no select, criar rota get pra mostrar

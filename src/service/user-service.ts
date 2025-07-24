@@ -81,6 +81,7 @@ export const userServices = {
 
     return {
       token,
+      user,
     };
   },
 };

@@ -27,14 +27,14 @@ export const authorize = (allowedRoles: string[]) => {
 
     const [scheme, token] = parts;
     if (!/^Bearer$/i.test(scheme)) {
-      res.status(401).json({ message: "Token mal formatado." });
+      res.status(401).json({ message: "Badly formatted token" });
       return;
     }
 
     try {
       const decoded = jwt.verify(
         token,
-        process.env.AUTH_SECRET!
+        process.env.AUTH_SECRET
       ) as TokenPayload;
       if (!allowedRoles.includes(decoded.role)) {
         res.status(403).json({ message: "Acess denied. Without permission" });

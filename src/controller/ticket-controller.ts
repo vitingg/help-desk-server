@@ -3,17 +3,10 @@ import { ticketService } from "../service/ticket-service";
 import { CreateTicketRequestDTO } from "../types/ticket";
 
 export async function ticketController(req: Request, res: Response) {
-  const { title, description, categoryId, clientId, techId, basePrice } =
+  const { title, description, categoryId, clientId, techId } =
     req.body as CreateTicketRequestDTO;
 
-  if (
-    !title ||
-    !description ||
-    !categoryId ||
-    !clientId ||
-    !techId ||
-    basePrice === undefined
-  ) {
+  if (!title || !description || !categoryId || !clientId || !techId) {
     return res.status(400).json({
       error:
         "Todos os campos obrigatórios (title, description, categoryId, clientId, techId, basePrice) devem ser fornecidos.",
@@ -27,7 +20,6 @@ export async function ticketController(req: Request, res: Response) {
       categoryId,
       clientId,
       techId,
-      basePrice,
     });
 
     return res.status(201).json(ticket);

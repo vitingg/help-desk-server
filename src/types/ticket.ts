@@ -4,5 +4,4 @@ export interface CreateTicketRequestDTO {
   categoryId: number;
   clientId: number;
   techId: number;
-  basePrice: number;
 }

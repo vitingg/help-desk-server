@@ -19,3 +19,4 @@ Ponto de atenção: Único responsável pela conexão do database, se algo relac
 
 => JWT token
 => criei tabela no schema de categorias, consumida no front no select, criar rota get pra mostrar
+=> admin precisa editar o serviços

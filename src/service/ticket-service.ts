@@ -7,7 +7,7 @@ import {
 import { CreateTicketRequestDTO } from "../types/ticket";
 
 export async function ticketService(data: CreateTicketRequestDTO) {
-  const { title, description, categoryId, clientId, techId, basePrice } = data;
+  const { title, description, categoryId, clientId, techId } = data;
 
   const categoryExists = await categoryRepository.findById(categoryId);
   const clientExists = await clientRepository.findById(clientId);
@@ -26,7 +26,6 @@ export async function ticketService(data: CreateTicketRequestDTO) {
   const serviceData = {
     title: title.trim(),
     description: description?.trim() || "",
-    basePrice: basePrice,
     category: {
       connect: { id: categoryId },
     },

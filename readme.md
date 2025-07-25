@@ -17,6 +17,13 @@ Ponto de atenção: Único responsável pela conexão do database, se algo relac
 
 ## Próximas etapas:
 
-=> JWT token
 => criei tabela no schema de categorias, consumida no front no select, criar rota get pra mostrar
 => admin precisa editar o serviços
+=> rotas de post, get, patch e delete nos ticket do serviço que deverá ser feito pelo técnico
+=> admin deve ter get, patch e delete no clientes (deletar um cliente deleta todos os seus
+tickets abertos automaticamente)
+
+=> criar o sistema de troca de senha
+
+=> começar a aplicar docker no projeto (o mais cedo possível!!)
+

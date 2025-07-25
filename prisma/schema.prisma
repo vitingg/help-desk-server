@@ -65,6 +65,6 @@ tech User @relation("TechServices", fields: [techId], references: [id])
 model Category {
   id        Int       @id @default(autoincrement())
   name      String
-  basePrice Decimal
+  basePrice Int
   services  Service[]
 }

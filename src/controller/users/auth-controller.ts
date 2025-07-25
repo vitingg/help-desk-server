@@ -1,6 +1,6 @@
 import { Request, Response, type NextFunction } from "express";
-import { userServices } from "../service/user-service";
-import { prisma } from "../lib/prisma";
+import { userServices } from "../../service/user-service";
+import { prisma } from "../../lib/prisma";
 
 export const signInController = async (req: Request, res: Response) => {
   const { email, password } = req.body;

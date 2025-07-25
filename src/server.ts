@@ -1,9 +1,9 @@
 import express from "express";
-import userRoutes from "./routes/client-routes";
-import techRoutes from "./routes/tech-routes";
-import signIn from "./routes/auth-routes";
-import category from "./routes/category-routes";
-import service from "./routes/ticket-routes";
+import userRoutes from "./routes/users/client-routes";
+import techRoutes from "./routes/users/tech-routes";
+import signIn from "./routes/users/auth-routes";
+import category from "./routes/tickets/category-routes";
+import service from "./routes/tickets/ticket-routes";
 
 const app = express();
 const port = 3000;

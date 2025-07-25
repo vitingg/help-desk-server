@@ -1,3 +1,4 @@
+import { prisma } from "../lib/prisma";
 import {
   ticketRepository,
   categoryRepository,
@@ -23,6 +24,12 @@ export async function ticketService(data: CreateTicketRequestDTO) {
     throw new Error("Technician not founded!");
   }
 
+  const currentService = await prisma.category.findFirst({
+    where: {
+      id: categoryId,
+    },
+  });
+
   const serviceData = {
     title: title.trim(),
     description: description?.trim() || "",
@@ -37,6 +44,7 @@ export async function ticketService(data: CreateTicketRequestDTO) {
     },
   };
   const service = await ticketRepository.create(serviceData);
+  const addService = { service, currentService };
 
-  return service;
+  return addService;
 }

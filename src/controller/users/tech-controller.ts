@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { userServices } from "../service/user-service";
-import { prisma } from "../lib/prisma";
+import { userServices } from "../../service/user-service";
+import { prisma } from "../../lib/prisma";
 
 export const createTech = async (req: Request, res: Response) => {
   try {

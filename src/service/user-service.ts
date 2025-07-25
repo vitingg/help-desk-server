@@ -84,4 +84,9 @@ export const userServices = {
       user,
     };
   },
+
+  resetPassword: async ({ password }: CreateUserInput) => {
+    return;
+  },
+  // Reset password
 };

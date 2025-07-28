@@ -1,6 +1,12 @@
-import app from "../users/client-routes";
-import { ticketController } from "../../controller/tickets/ticket-controller";
+import { app } from "@src/lib/app-express";
+import {
+  ticketController,
+  getTickets,
+  deleteTickets,
+} from "@controllers/tickets/ticket-controller";
 
 app.post("/service", ticketController);
+app.get("/service", getTickets);
+app.delete("/service/:id", deleteTickets);
 
 export default app;

@@ -70,7 +70,7 @@ export const userServices = {
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
-      throw new Error("Invalid credentials! Senha errada");
+      throw new Error("Invalid credentials!");
     }
 
     const token = jwt.sign(
@@ -85,21 +85,28 @@ export const userServices = {
     };
   },
 
-  changePassword: async ({ oldPassword, newPassword, userId }) => {
-    const user = await userRepository.findById(userId);
+  changePassword: async ({ oldPassword, newPassword, userIdFromToken }) => {
+    const user = await userRepository.findById(userIdFromToken);
     if (!user) {
       throw new Error("Invalid credentials!");
     }
 
-    const isPasswordCorrect = await bcrypt.compare(
-      oldPassword,
-      userId.password
-    );
+    const isPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
     if (!isPasswordCorrect) {
       throw new Error("Password incorrect!");
     }
 
+    if (oldPassword === newPassword) {
+      throw new Error("Cannot set the same password");
+    }
+
+    const { password, ...userWithoutPassword } = user;
+
     const newDatabasePassword = await bcrypt.hash(newPassword, 10);
-    await userRepository.changePassword(userId, newDatabasePassword);
+    await userRepository.changePassword(userIdFromToken, newDatabasePassword);
+
+    return {
+      userWithoutPassword,
+    };
   },
 };

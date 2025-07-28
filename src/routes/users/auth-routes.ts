@@ -1,10 +1,10 @@
+import { validateUser } from "@src/middlewares/validate-user";
+import { signInSchema } from "@src/schemas-zod/schemas";
+import { app } from "@src/lib/app-express";
 import {
   signInController,
   getAdmins,
-} from "../../controller/users/auth-controller";
-import { validateUser } from "../../middlewares/validate-user";
-import { signInSchema } from "../../schemas-zod/schemas";
-import app from "./client-routes";
+} from "@controllers/users/auth-controller";
 
 app.post("/sign-in", validateUser(signInSchema), signInController);
 app.get("/sign-in", getAdmins);

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { userServices } from "../../service/user-service";
-import { prisma } from "../../lib/prisma";
+import { userServices } from "@src/service/user-service";
+import { prisma } from "@src/lib/prisma";
 
 export const createClient = async (req: Request, res: Response) => {
   try {
@@ -31,7 +31,21 @@ export const getClients = async (
     });
     res.status(200).json(users);
   } catch (error) {
-    console.log("Erro ao buscar usuários");
+    console.log("Error in search client.");
+    res.status(500).json({ error: error });
+  }
+};
+
+export const deleteClients = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const user = await prisma.user.delete({ where: { id: Number(id) } });
+    res.status(200).json({ message: "deleted successfully" });
+  } catch (error) {
+    if (error === "P2025") {
+      res.status(404).json({ error: "User not found!" });
+    }
+    console.log("Error in delete client.");
     res.status(500).json({ error: error });
   }
 };

@@ -1,9 +1,44 @@
 {
   "compilerOptions": {
+    // --- Suas Opções Originais (Mantidas) ---
     "lib": [
       "ES2024"
     ],
     "module": "nodenext",
-    "target": "ES2024"
-  }
+    "target": "ES2024",
+    // --- Opções Recomendadas para um Projeto Robusto ---
+    "esModuleInterop": true, // Melhora a compatibilidade entre módulos CommonJS e ES Modules.
+    "skipLibCheck": true, // Pula a verificação de tipos dos arquivos de declaração (.d.ts).
+    "forceConsistentCasingInFileNames": true, // Garante que os imports usem o mesmo case do nome do arquivo.
+    "moduleResolution": "nodenext", // Redundante com module:nodenext, mas deixa explícito.
+    // --- Configuração dos Aliases de Caminho ---
+    "baseUrl": ".", // Define a raiz do projeto como base para os caminhos.
+    "paths": {
+      "@src/*": [
+        "src/*"
+      ],
+      "@controllers/*": [
+        "src/controller/*"
+      ],
+      "@services/*": [
+        "src/service/*"
+      ],
+      "@middlewares/*": [
+        "src/middlewares/*"
+      ],
+      "@repository/*": [
+        "src/repository/*"
+      ]
+    },
+    // --- Configuração de Saída (Opcional, mas recomendado) ---
+    "outDir": "./dist", // Onde os arquivos JavaScript compilados serão salvos.
+    "rootDir": "./src" // Onde estão seus arquivos fonte TypeScript.
+  },
+  // --- Arquivos a serem incluídos e excluídos pelo compilador ---
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -1,12 +1,14 @@
+import { validateUser } from "@src/middlewares/validate-user";
+import { signUpSchema } from "@src/schemas-zod/schemas";
+import { app } from "@src/lib/app-express";
 import {
   createClient,
   getClients,
-} from "../../controller/users/client-controller";
-import { validateUser } from "../../middlewares/validate-user";
-import { signUpSchema } from "../../schemas-zod/schemas";
-import { app } from "../../lib/app-express";
+  deleteClients,
+} from "@controllers/users/client-controller";
 
-app.post("/", validateUser(signUpSchema), createClient);
-app.get("/", getClients);
+app.post("/clients", validateUser(signUpSchema), createClient);
+app.get("/clients", getClients);
+app.delete("/clients/:id", deleteClients);
 
 export default app;

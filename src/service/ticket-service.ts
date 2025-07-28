@@ -1,11 +1,11 @@
-import { prisma } from "../lib/prisma";
+import { prisma } from "@src/lib/prisma";
 import {
   ticketRepository,
   categoryRepository,
   clientRepository,
   techRepository,
-} from "../repository/ticket-repository";
-import { CreateTicketRequestDTO } from "../types/ticket";
+} from "@repository/ticket-repository";
+import { CreateTicketRequestDTO } from "@src/types/ticket";
 
 export async function ticketService(data: CreateTicketRequestDTO) {
   const { title, description, categoryId, clientId, techId } = data;

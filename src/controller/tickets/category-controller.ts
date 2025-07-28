@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { prisma } from "../../lib/prisma";
+import { prisma } from "@src/lib/prisma";
 
 export const categoryController = async (req: Request, res: Response) => {
   try {

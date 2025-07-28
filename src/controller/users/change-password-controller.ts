@@ -1,23 +1,27 @@
 import { Request, Response } from "express";
-import { userServices } from "../../service/user-service";
+import { userServices } from "@src/service/user-service"; 
+import { AuthenticatedRequest } from "@src/middlewares/authorize"; 
 
-export function changePasswordController(req: Request, res: Response) {
+export async function changePasswordController(
+  req: AuthenticatedRequest,
+  res: Response
+) {
   const { oldPassword, newPassword } = req.body;
-  const userId = req.body.id;
 
   if (!oldPassword || !newPassword) {
     throw new Error("Invalid Credentials");
   }
+  const userIdFromToken = req.user?.userId;
 
-  if (!userId) {
+  if (!userIdFromToken) {
     throw new Error("No users informed!");
   }
 
   try {
-    const user = userServices.changePassword({
+    const user = await userServices.changePassword({
       oldPassword,
       newPassword,
-      userId,
+      userIdFromToken,
     });
     res.status(200).json(user);
   } catch (error) {

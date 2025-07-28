@@ -85,8 +85,21 @@ export const userServices = {
     };
   },
 
-  resetPassword: async ({ password }: CreateUserInput) => {
-    return;
+  changePassword: async ({ oldPassword, newPassword, userId }) => {
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new Error("Invalid credentials!");
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(
+      oldPassword,
+      userId.password
+    );
+    if (!isPasswordCorrect) {
+      throw new Error("Password incorrect!");
+    }
+
+    const newDatabasePassword = await bcrypt.hash(newPassword, 10);
+    await userRepository.changePassword(userId, newDatabasePassword);
   },
-  // Reset password
 };

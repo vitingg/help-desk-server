@@ -1,6 +1,11 @@
 import { app } from "../../lib/app-express";
+import { changePasswordController } from "../../controller/users/change-password-controller";
+import { authorize } from "../../middlewares/authorize";
 
 app.post(
-  "/" // middlware:zod verificando a password
-  // controller: alteração de password
+  "/change-password",
+  authorize(["CLIENT", "TECH"]),
+  changePasswordController
 );
+
+export default app;

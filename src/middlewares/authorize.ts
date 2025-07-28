@@ -16,7 +16,7 @@ export const authorize = (allowedRoles: string[]) => {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      res.status(401).json({ message: "No token provieded!" });
+      res.status(401).json({ message: "No token provided!" });
       return;
     }
 
@@ -37,7 +37,7 @@ export const authorize = (allowedRoles: string[]) => {
         process.env.AUTH_SECRET
       ) as TokenPayload;
       if (!allowedRoles.includes(decoded.role)) {
-        res.status(403).json({ message: "Acess denied. Without permission" });
+        res.status(403).json({ message: "Access denied. Without permission" });
         return;
       }
       req.user = decoded;

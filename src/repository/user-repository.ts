@@ -15,4 +15,19 @@ export const userRepository = {
       },
     });
   },
+
+  findById: async (id: number) => {
+    return prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+  },
+
+  changePassword: async (id: number, newPassword: string) => {
+    return prisma.user.update({
+      where: { id },
+      data: { password: newPassword },
+    });
+  },
 };

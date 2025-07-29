@@ -26,11 +26,9 @@ export async function ticketController(req: Request, res: Response) {
     return res.status(201).json(ticket);
   } catch (error) {
     console.log("Erro ao criar o ticket", error);
-    return res
-      .status(400)
-      .json({
-        message: error?.message || "Erro desconhecido ao criar ticket.",
-      });
+    return res.status(400).json({
+      message: error?.message || "Erro desconhecido ao criar ticket.",
+    });
   }
 }
 
@@ -48,7 +46,7 @@ export const deleteTickets = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const tickets = await prisma.service.delete({ where: { id: Number(id) } });
-    res.status(200).json({ message: "deleted successfully" });
+    res.status(200).json({ message: "Deleted successfully." });
   } catch (error) {
     if (error === "P2025") {
       res.status(404).json({ error: "Service not found!" });

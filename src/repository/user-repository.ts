@@ -31,3 +31,19 @@ export const userRepository = {
     });
   },
 };
+
+export const clientRepository = {
+  findById: async (id: number) => {
+    return prisma.user.findUnique({
+      where: { id, role: "CLIENT" },
+    });
+  },
+};
+
+export const techRepository = {
+  findById: async (id: number) => {
+    return prisma.user.findUnique({
+      where: { id, role: "TECH" },
+    });
+  },
+};

@@ -1,5 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@src/lib/prisma";
+import { ICreateCategoriesServiceInterface } from "@src/service/ticket-service";
 
 export const ticketRepository = {
   create: async (data: Prisma.ServiceCreateInput) => {
@@ -17,18 +18,18 @@ export const categoryRepository = {
   },
 };
 
-export const clientRepository = {
-  findById: async (id: number) => {
-    return prisma.user.findUnique({
-      where: { id, role: "CLIENT" },
+export const categoryExists = {
+  findFirst: async (name: string) => {
+    return prisma.category.findFirst({
+      where: { name },
     });
   },
 };
 
-export const techRepository = {
-  findById: async (id: number) => {
-    return prisma.user.findUnique({
-      where: { id, role: "TECH" },
+export const createCategory = {
+  create: async (data: ICreateCategoriesServiceInterface) => {
+    return prisma.category.create({
+      data: data,
     });
   },
 };

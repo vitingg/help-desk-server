@@ -1,7 +1,11 @@
 import { app } from "@src/lib/app-express";
-import { categoryController } from "@src/controller/tickets/category-controller";
+import {
+  createCategories,
+  getCategories,
+} from "@src/controller/tickets/category-controller";
 
 // Responsável por pegar a categoria do select feito no front
-app.get("/category", categoryController);
+app.post("/category", createCategories);
+app.get("/category", getCategories);
 
 export default app;

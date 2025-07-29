@@ -11,13 +11,13 @@ const port = 3000;
 
 app.use(express.json());
 
-app.use("/", userRoutes); // create client account
-app.use("/", techRoutes); // create tech account
+app.use("/", userRoutes); // client account
+app.use("/", techRoutes); // tech account
 app.use("/", signIn); // sign-in in account
 
-app.use("/", category); // sign-in in account
+app.use("/", category); // see the actually categorys
 
-app.use("/", service); // post in tickets
+app.use("/", service); // tickets
 
 app.use("/", changePassword);
 

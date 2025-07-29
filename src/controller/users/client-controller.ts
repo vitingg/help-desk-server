@@ -39,13 +39,23 @@ export const getClients = async (
 export const deleteClients = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
+    const userTickets = await prisma.service.deleteMany({
+      where: {
+        clientId: Number(id),
+      },
+    });
+
+    if (!userTickets) {
+      throw new Error("Doesn't have any user with this ticket.");
+    }
+
     const user = await prisma.user.delete({ where: { id: Number(id) } });
     res.status(200).json({ message: "deleted successfully" });
   } catch (error) {
     if (error === "P2025") {
       res.status(404).json({ error: "User not found!" });
     }
-    console.log("Error in delete client.");
+    console.log("Error in delete client.", error);
     res.status(500).json({ error: error });
   }
 };

@@ -1,11 +1,15 @@
-import { prisma } from "@src/lib/prisma";
+import { CreateTicketRequestDTO } from "@src/types/ticket";
 import {
   ticketRepository,
   categoryRepository,
+  categoryExists,
+  createCategory,
+} from "@repository/ticket-repository";
+import {
   clientRepository,
   techRepository,
-} from "@repository/ticket-repository";
-import { CreateTicketRequestDTO } from "@src/types/ticket";
+} from "src/repository/user-repository";
+import { prisma } from "@src/lib/prisma";
 
 export async function ticketService(data: CreateTicketRequestDTO) {
   const { title, description, categoryId, clientId, techId } = data;
@@ -48,3 +52,20 @@ export async function ticketService(data: CreateTicketRequestDTO) {
 
   return addService;
 }
+
+export interface ICreateCategoriesServiceInterface {
+  name: string;
+  basePrice: number;
+}
+
+export const createCategoriesService = async ({
+  name,
+  basePrice,
+}: ICreateCategoriesServiceInterface) => {
+  const creatingCategory = await createCategory.create({
+    name,
+    basePrice,
+  });
+
+  return creatingCategory;
+};

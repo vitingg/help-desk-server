@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { userServices } from "@src/service/user-service"; 
+import { userServices } from "@src/service/user-service";
 import { prisma } from "@src/lib/prisma";
 
 export const createTech = async (req: Request, res: Response) => {
@@ -30,6 +30,9 @@ export const getTechs = async (
       where: {
         role: "TECH",
       },
+      include: {
+        workHours: true
+      }
     });
     res.status(200).json(users);
   } catch (error) {

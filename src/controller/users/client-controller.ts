@@ -36,6 +36,51 @@ export const getClients = async (
   }
 };
 
+export const putClient = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  const { username, email } = req.body;
+  try {
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+    if (!existingUser) {
+      throw new Error("Doesn't exists any users with this credentials.");
+    }
+
+    const emailAlreadyTaken = await prisma.user.findFirst({
+      where: {
+        email: email,
+        id: { not: Number(id) },
+      },
+    });
+
+    if (emailAlreadyTaken) {
+      throw new Error("Already exists a person with this email.");
+    }
+
+    const user = await prisma.user.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        username: username,
+        email: email,
+      },
+    });
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.log("Error in search client.", error);
+    res.status(400).json({ error: error });
+  }
+};
+
 export const deleteClients = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {

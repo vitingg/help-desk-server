@@ -14,10 +14,3 @@ Ponto de atenção: Não é responsável por acessar o banco de dados. <br/>
 Ponto de atenção: Único responsável pela conexão do database, se algo relacionado a métodos do prisma fora dele, está errado.
 
 ===========================================================================
-
-## Próximas etapas:
-
-=> criei tabela no schema de categorias, consumida no front no select, criar rota get pra mostrar
-=> patch em services apenas para techs e admin
-=> admin deve ter patch no clientes
-=> criar uma forma de desativar os serviços

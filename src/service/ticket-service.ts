@@ -62,6 +62,15 @@ export const createCategoriesService = async ({
   name,
   basePrice,
 }: ICreateCategoriesServiceInterface) => {
+  try {
+    const existsCategory = await categoryExists.findFirst(name);
+    if (existsCategory) {
+      throw new Error("Already exists one category with this name.");
+    }
+  } catch (error) {
+    console.log("Error in ticket service.", error);
+  }
+
   const creatingCategory = await createCategory.create({
     name,
     basePrice,

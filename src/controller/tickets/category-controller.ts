@@ -4,7 +4,6 @@ import { createCategoriesService } from "@src/service/ticket-service";
 
 export const createCategories = async (req: Request, res: Response) => {
   const { name, basePrice } = req.body;
-
   try {
     const createCategories = await createCategoriesService({
       name,
@@ -18,16 +17,82 @@ export const createCategories = async (req: Request, res: Response) => {
 
 export const getCategories = async (req: Request, res: Response) => {
   try {
+    const categories = await prisma.category.findMany({});
+    res.status(200).json(categories);
+  } catch (error) {
+    console.error("Error on search all categories:", error);
+    res.status(400).json({ error: "Error on search all categories." });
+  }
+};
+
+export const clientGetCategories = async (req: Request, res: Response) => {
+  try {
     const categories = await prisma.category.findMany({
-      select: {
-        id: true,
-        name: true,
-        basePrice: true,
+      where: {
+        isActive: true,
       },
     });
     res.status(200).json(categories);
   } catch (error) {
-    console.error("Erro ao buscar categorias:", error);
-    res.status(500).json({ error: "Erro interno ao buscar categorias" });
+    console.error("Error on client get categories:", error);
+    res.status(400).json({ error: "Error on search client get categories." });
+  }
+};
+
+export const putToggleActivities = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const existingCategory = await prisma.category.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!existingCategory) {
+      throw new Error("Fail on search for category!");
+    }
+
+    const categories = await prisma.category.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        isActive: !existingCategory.isActive,
+      },
+    });
+    res.status(200).json(categories);
+  } catch (error) {
+    console.error("Fail on change activities:", error);
+    res.status(400).json({ error: "Error in change activities." });
+  }
+};
+
+export const putChangeNameOrPrice = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { name, basePrice } = req.body;
+  try {
+    const existingCategory = await prisma.category.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!existingCategory) {
+      throw new Error("Fail on search for category!");
+    }
+
+    const categories = await prisma.category.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        name: name,
+        basePrice: basePrice,
+      },
+    });
+    res.status(200).json(categories);
+  } catch (error) {
+    console.error("Fail on change activities:", error);
+    res.status(400).json({ error: "Error in change activities." });
   }
 };

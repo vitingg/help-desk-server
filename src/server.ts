@@ -15,7 +15,7 @@ app.use("/", userRoutes); // client account
 app.use("/", techRoutes); // tech account
 app.use("/", signIn); // sign-in in account
 
-app.use("/", category); // see the actually categorys
+app.use("/", category); // see the actually categories
 
 app.use("/", service); // tickets
 

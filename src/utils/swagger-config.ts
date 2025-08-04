@@ -16,11 +16,70 @@ const options: swaggerJSDoc.Options = {
         url: "http://localhost:3000",
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        }
+      },
+      schemas: {
+        Client: {
+          type: "object",
+          properties: {
+            id: {
+              type: "integer",
+              description: "O ID único do cliente.",
+              example: 10,
+            },
+            username: {
+              type: "string",
+              description: "Nome de usuário do cliente.",
+              example: "Victor Gabriel",
+            },
+            email: {
+              type: "string",
+              description: "E-mail do cliente.",
+              example: "victor@example.com",
+            },
+          },
+        },
+        Tech: {
+          type: "object",
+          properties: {
+            id: {
+              type: "integer",
+              description: "O ID único do técnico.",
+              example: 10,
+            },
+            username: {
+              type: "string",
+              description: "Nome de usuário do técnico.",
+              example: "José Ronaldo",
+            },
+            email: {
+              type: "string",
+              description: "E-mail do cliente.",
+              example: "jose@example.com",
+            },
+          },
+        },
+        Error: {
+          type: "object",
+          properties: {
+            message: {
+              type: "string",
+            },
+          },
+        },
+      },
+    },
   },
-  apis: ["src/routes/*.ts"],
+  apis: ["./src/routes/**/*.ts"],
 };
 
-const swaggerSpec = swaggerJSDoc(options);
+export const swaggerSpec = swaggerJSDoc(options);
 
 export const setupSwagger = (app: Express) => {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

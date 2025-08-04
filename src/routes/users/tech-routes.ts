@@ -20,7 +20,7 @@ import { app } from "@src/lib/app-express";
  *               - email
  *               - password
  *             properties:
- *               name:
+ *               username:
  *                 type: string
  *               email:
  *                 type: string
@@ -29,11 +29,11 @@ import { app } from "@src/lib/app-express";
  *                 type: string
  *     responses:
  *       201:
- *         description: Criação de um técnico com sucesso
+ *         description: Técnico criado com sucesso
  *       400:
- *         description: Dados inválidos
+ *         description: Erro ao criar um técnico
  *       401:
- *         description: Acesso não autorizado
+ *         description: Não autorizado
  */
 app.post("/tech", authorize(["ADMIN"]), createTech);
 

@@ -13,8 +13,8 @@ export const createClient = async (req: Request, res: Response) => {
 
     res.status(201).json(newUser);
   } catch (error) {
-    console.log("Erro ao criar o usuário");
-    res.status(500).json({ error: "Erro na controller do cliente" + error });
+    console.log("Error in create user.");
+    res.status(500).json({ error: "Error in client controller" + error });
   }
 };
 

@@ -15,8 +15,8 @@ export const createTech = async (req: Request, res: Response) => {
 
     res.status(201).json(newUser);
   } catch (error) {
-    console.log("Erro ao criar o usuário");
-    res.status(500).json({ error: "Erro na controller do cliente" + error });
+    console.log("Error in create techs");
+    res.status(500).json({ error: "Error in tech controller" + error });
   }
 };
 
@@ -36,7 +36,7 @@ export const getTechs = async (
     });
     res.status(200).json(users);
   } catch (error) {
-    console.log("Erro ao buscar usuários");
+    console.log("Error in search techs.");
     res.status(500).json({ error: error });
   }
 };

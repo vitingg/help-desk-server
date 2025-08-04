@@ -22,7 +22,7 @@ const options: swaggerJSDoc.Options = {
           type: "http",
           scheme: "bearer",
           bearerFormat: "JWT",
-        }
+        },
       },
       schemas: {
         Client: {
@@ -62,6 +62,66 @@ const options: swaggerJSDoc.Options = {
               type: "string",
               description: "E-mail do cliente.",
               example: "jose@example.com",
+            },
+          },
+        },
+        Category: {
+          type: "object",
+          properties: {
+            id: {
+              type: "integer",
+              description: "O ID único da categoria.",
+              example: 10,
+            },
+            name: {
+              type: "string",
+              description: "Nome da categoria.",
+              example: "Atualização do software.",
+            },
+            basePrice: {
+              type: "integer",
+              description: "Preço da categoria.",
+              example: 200,
+            },
+            isActive: {
+              type: "boolean",
+              description: "Indica se a categoria esta ativa.",
+              example: true,
+            },
+          },
+        },
+        Service: {
+          type: "object",
+          properties: {
+            id: {
+              type: "integer",
+              description: "O ID único do serviço.",
+              example: 10,
+            },
+            title: {
+              type: "string",
+              description: "Título do serviço.",
+              example: "Atualização do software.",
+            },
+            description: {
+              type: "string",
+              description: "Descrição do problema.",
+              example: "Estou tendo problemas com...",
+            },
+            categoryId: {
+              type: "integer",
+              description: "O Id da categoria.",
+              example: 2,
+            },
+            clientId: {
+              type: "integer",
+              description: "O Id do cliente.",
+              example: 10,
+            },
+            techId: {
+              type: "integer",
+              description: "O Id do técnico",
+              example: 5,
             },
           },
         },

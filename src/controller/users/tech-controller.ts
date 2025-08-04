@@ -41,7 +41,6 @@ export const getTechs = async (
   }
 };
 
-// Implementar: fazer a rota de fato, atual copy e paste do client put
 export const putTech = async (
   req: Request,
   res: Response,
@@ -49,6 +48,14 @@ export const putTech = async (
 ) => {
   const { id } = req.params;
   const { username, email } = req.body;
+
+  if (!username) {
+    throw new Error("Inform your username.");
+  }
+  if (!email) {
+    throw new Error("Inform your email.");
+  }
+
   try {
     const existingUser = await prisma.user.findUnique({
       where: {
@@ -73,6 +80,7 @@ export const putTech = async (
     const user = await prisma.user.update({
       where: {
         id: Number(id),
+        role: "TECH",
       },
       data: {
         username: username,

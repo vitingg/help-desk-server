@@ -20,7 +20,7 @@ app.use("/", category); // see the actually categories
 
 app.use("/", service); // tickets
 
-app.use("/", changePassword);
+app.use("/", changePassword); // 
 
 setupSwagger(app);
 

@@ -1,4 +1,8 @@
-import { createTech, getTechs } from "@controllers/users/tech-controller";
+import {
+  createTech,
+  getTechs,
+  putTech,
+} from "@controllers/users/tech-controller";
 import { authorize } from "@src/middlewares/authorize";
 import { app } from "@src/lib/app-express";
 
@@ -51,5 +55,40 @@ app.post("/tech", authorize(["ADMIN"]), createTech);
  *         description: Não autorizado
  */
 app.get("/techs", getTechs);
+
+/**
+ * @openapi
+ * /tech/{id}:
+ *   put:
+ *     tags:
+ *       - Tech
+ *     summary: Atualizar um técnico
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Técnico atualizado com sucesso
+ *       404:
+ *         description: Técnico não encontrado
+ *       401:
+ *         description: Não autorizado
+ */
+app.put("/tech/:id", putTech);
 
 export default app;

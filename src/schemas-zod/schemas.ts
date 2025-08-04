@@ -3,7 +3,7 @@ import z from "zod";
 export const signUpSchema = z.object({
   username: z
     .string({ message: "Enter a valid username." })
-    .min(4, { message: "Username need to be more thann 4 characters." })
+    .min(4, { message: "Username need to be more than 4 characters." })
     .nonempty("Username is obligatory.")
     .transform((username) => {
       return username
@@ -30,3 +30,4 @@ export const signInSchema = z.object({
     .string()
     .min(6, { message: "Password need to be more than 6 characters." }),
 });
+

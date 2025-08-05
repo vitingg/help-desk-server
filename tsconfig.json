@@ -16,10 +16,10 @@
         "src/*"
       ],
       "@controllers/*": [
-        "src/controller/*"
+        "src/controllers/*"
       ],
       "@services/*": [
-        "src/service/*"
+        "src/services/*"
       ],
       "@middlewares/*": [
         "src/middlewares/*"

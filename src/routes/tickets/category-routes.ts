@@ -5,7 +5,7 @@ import {
   clientGetCategories,
   putToggleActivities,
   putChangeNameOrPrice,
-} from "@src/controller/tickets/category-controller";
+} from "@src/controllers/tickets/category-controller";
 
 /**
  * @openapi

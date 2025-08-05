@@ -12,7 +12,8 @@ const config: Config = {
     "^@src/(.*)$": "<rootDir>/src/$1",
     "^@repository/(.*)$": "<rootDir>/src/repository/$1",
     "^@controllers/(.*)$": "<rootDir>/src/controllers/$1",
-    "^@service/(.*)$": "<rootDir>/src/service/$1",
+    "^@services/(.*)$": "<rootDir>/src/services/$1",
+    "^@middlewares/(.*)$": "<rootDir>/src/middlewares/$1",
   },
   roots: ["<rootDir>/src"],
 };

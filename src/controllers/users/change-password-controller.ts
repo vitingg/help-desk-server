@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { userServices } from "@src/service/user-service"; 
-import { AuthenticatedRequest } from "@src/middlewares/authorize"; 
+import { userServices } from "@src/services/user-service";
+import { AuthenticatedRequest } from "@src/middlewares/authorize";
 
 export async function changePasswordController(
   req: AuthenticatedRequest,

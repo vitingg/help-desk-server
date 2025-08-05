@@ -1,24 +1,26 @@
 import { Request, Response, NextFunction } from "express";
-import { userServices } from "@src/service/user-service";
+import { userServices } from "@src/services/user-service";
 import { prisma } from "@src/lib/prisma";
 
-export const createClient = async (req: Request, res: Response) => {
+export const createTech = async (req: Request, res: Response) => {
   try {
-    const { username, email, password } = req.body;
-    const newUser = await userServices.createClientUser({
+    const { username, email, password, workHours } = req.body;
+
+    const newUser = await userServices.createTechUser({
       username,
       email,
       password,
+      workHours,
     });
 
     res.status(201).json(newUser);
   } catch (error) {
-    console.log("Error in create user.");
-    res.status(500).json({ error: "Error in client controller" + error });
+    console.log("Error in create techs");
+    res.status(500).json({ error: "Error in tech controller" + error });
   }
 };
 
-export const getClients = async (
+export const getTechs = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -26,23 +28,34 @@ export const getClients = async (
   try {
     const users = await prisma.user.findMany({
       where: {
-        role: "CLIENT",
+        role: "TECH",
+      },
+      include: {
+        workHours: true,
       },
     });
     res.status(200).json(users);
   } catch (error) {
-    console.log("Error in search client.");
+    console.log("Error in search techs.");
     res.status(500).json({ error: error });
   }
 };
 
-export const putClient = async (
+export const putTech = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const { id } = req.params;
   const { username, email } = req.body;
+
+  if (!username) {
+    throw new Error("Inform your username.");
+  }
+  if (!email) {
+    throw new Error("Inform your email.");
+  }
+
   try {
     const existingUser = await prisma.user.findUnique({
       where: {
@@ -50,7 +63,7 @@ export const putClient = async (
       },
     });
     if (!existingUser) {
-      throw new Error("Doesn't exists any users with this credentials.");
+      throw new Error("Doesn't exists any techs with this credentials.");
     }
 
     const emailAlreadyTaken = await prisma.user.findFirst({
@@ -67,6 +80,7 @@ export const putClient = async (
     const user = await prisma.user.update({
       where: {
         id: Number(id),
+        role: "TECH",
       },
       data: {
         username: username,
@@ -78,29 +92,5 @@ export const putClient = async (
   } catch (error) {
     console.log("Error in search client.", error);
     res.status(400).json({ error: error });
-  }
-};
-
-export const deleteClients = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const userTickets = await prisma.service.deleteMany({
-      where: {
-        clientId: Number(id),
-      },
-    });
-
-    if (!userTickets) {
-      throw new Error("Doesn't have any user with this ticket.");
-    }
-
-    const user = await prisma.user.delete({ where: { id: Number(id) } });
-    res.status(200).json({ message: "deleted successfully" });
-  } catch (error) {
-    if (error === "P2025") {
-      res.status(404).json({ error: "User not found!" });
-    }
-    console.log("Error in delete client.", error);
-    res.status(500).json({ error: error });
   }
 };

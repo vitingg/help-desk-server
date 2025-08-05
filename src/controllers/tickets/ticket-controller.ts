@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ticketService } from "@src/service/ticket-service";
+import { ticketService } from "@src/services/ticket-service";
 import { CreateTicketRequestDTO } from "@src/types/ticket";
 import { prisma } from "@src/lib/prisma";
 

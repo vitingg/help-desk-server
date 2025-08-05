@@ -1,6 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@src/lib/prisma";
-import { ICreateCategoriesServiceInterface } from "@src/service/ticket-service";
+import { ICreateCategoriesServiceInterface } from "@src/services/ticket-service";
 
 export const ticketRepository = {
   create: async (data: Prisma.ServiceCreateInput) => {

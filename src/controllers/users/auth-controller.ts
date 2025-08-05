@@ -1,5 +1,5 @@
 import { Request, Response, type NextFunction } from "express";
-import { userServices } from "@src/service/user-service";
+import { userServices } from "@src/services/user-service";
 import { prisma } from "@src/lib/prisma";
 
 export const signInController = async (req: Request, res: Response) => {

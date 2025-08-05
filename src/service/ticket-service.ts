@@ -8,7 +8,7 @@ import {
 import {
   clientRepository,
   techRepository,
-} from "src/repository/user-repository";
+} from "@src/repository/user-repository";
 import { prisma } from "@src/lib/prisma";
 
 export async function ticketService(data: CreateTicketRequestDTO) {

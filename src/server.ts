@@ -25,3 +25,5 @@ app.use("/", changePassword); //
 setupSwagger(app);
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
+
+export default app

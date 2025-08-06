@@ -12,7 +12,6 @@ export const signInController = async (req: Request, res: Response) => {
     console.error("Error in login:", error);
     return res.status(401).json({ message: "Invalid credentials." });
   }
-  res.status(500).json({ message: "Internal error." });
 };
 
 export const getAdmins = async (

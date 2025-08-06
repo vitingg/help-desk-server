@@ -91,7 +91,7 @@ export const deleteClients = async (req: Request, res: Response) => {
     });
 
     if (!userTickets) {
-      throw new Error("Doesn't have any user with this ticket.");
+      console.log("Deleting user with no services.");
     }
 
     const user = await prisma.user.delete({ where: { id: Number(id) } });
@@ -101,6 +101,5 @@ export const deleteClients = async (req: Request, res: Response) => {
       res.status(404).json({ error: "User not found!" });
     }
     console.log("Error in delete client.", error);
-    res.status(500).json({ error: error });
   }
 };

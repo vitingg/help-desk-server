@@ -2,13 +2,14 @@ import {
   createTech,
   getTechs,
   putTech,
+  deleteTech,
 } from "@controllers/users/tech-controller";
 import { authorize } from "@src/middlewares/authorize";
 import { app } from "@src/lib/app-express";
 
 /**
  * @openapi
- * /tech:
+ * /techs:
  *   post:
  *     tags:
  *       - Tech
@@ -39,7 +40,7 @@ import { app } from "@src/lib/app-express";
  *       401:
  *         description: Não autorizado
  */
-app.post("/tech", authorize(["ADMIN"]), createTech);
+app.post("/techs", authorize(["ADMIN"]), createTech);
 
 /**
  * @openapi
@@ -58,7 +59,7 @@ app.get("/techs", getTechs);
 
 /**
  * @openapi
- * /tech/{id}:
+ * /techs/{id}:
  *   put:
  *     tags:
  *       - Tech
@@ -89,6 +90,29 @@ app.get("/techs", getTechs);
  *       401:
  *         description: Não autorizado
  */
-app.put("/tech/:id", putTech);
+app.put("/techs/:id", authorize(["ADMIN"]), putTech);
+
+/**
+ * @openapi
+ * /techs/{id}:
+ *   delete:
+ *     tags:
+ *       - Tech
+ *     summary: Removendo um técnico pelo ID
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Técnico deletado com sucesso
+ *       404:
+ *         description: Técnico não encontrado
+ *       401:
+ *         description: Não autorizado
+ */
+app.delete("/techs/:id", authorize(["ADMIN"]), deleteTech);
 
 export default app;

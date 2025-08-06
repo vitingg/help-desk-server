@@ -1,13 +1,40 @@
 import request from "supertest";
 import app from "@src/server";
 
-it("should create a new client", async () => {
-  const response = await request(app).post("/clients").send({
-    username: "Teste tech",
-    email: "teste@gmail.com",
-    password: "testees",
-    role: "TECH"
+describe("tech tests", () => {
+  let token: string;
+  let createdTechId: number;
+
+  // Duas operações, sign-in pra pegar token, usar o token pra criar um tech
+  beforeAll(async () => {
+    const login = await request(app).post("/sign-in").send({
+      email: "Admin@gmail.com",
+      password: "AdminPassword",
+    });
+
+    token = login.body.token;
   });
 
-  expect(response.status).toBe(201);
+  it("should create a new tech", async () => {
+    const response = await request(app)
+      .post("/techs")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        username: "Teste tech",
+        email: "testtech@gmail.com",
+        password: "testtech",
+        role: "TECH",
+      });
+
+    expect(response.status).toBe(201);
+    createdTechId = await response.body.id;
+  });
+
+  it("should delete the tech", async () => {
+    const response = request(app)
+      .delete(`/techs/${createdTechId}`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect((await response).status).toBe(200);
+  });
 });

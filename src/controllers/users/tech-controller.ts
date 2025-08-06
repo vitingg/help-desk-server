@@ -16,7 +16,7 @@ export const createTech = async (req: Request, res: Response) => {
     res.status(201).json(newUser);
   } catch (error) {
     console.log("Error in create techs");
-    res.status(500).json({ error: "Error in tech controller" + error });
+    res.status(400).json({ error: "Error in tech controller" + error });
   }
 };
 
@@ -92,5 +92,25 @@ export const putTech = async (
   } catch (error) {
     console.log("Error in search client.", error);
     res.status(400).json({ error: error });
+  }
+};
+
+export const deleteTech = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  try {
+    const user = await prisma.user.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    res.status(200).json({ user });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error);
   }
 };

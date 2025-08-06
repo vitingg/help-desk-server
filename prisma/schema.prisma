@@ -31,7 +31,7 @@ model User {
 model WorkHours {
   id        Int      @id @default(autoincrement())
   workTime  String[]
-  tech      User     @relation(fields: [techId], references: [id])
+  tech      User     @relation(fields: [techId], references: [id], onDelete: Cascade)
   techId    Int      @unique
 }
 

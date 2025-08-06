@@ -5,6 +5,7 @@ import {
   clientGetCategories,
   putToggleActivities,
   putChangeNameOrPrice,
+  deleteCategories,
 } from "@src/controllers/tickets/category-controller";
 
 /**
@@ -132,5 +133,28 @@ app.put("/category/:id", putToggleActivities);
  *         description: Não autorizado
  */
 app.put("/category/change-parameters/:id", putChangeNameOrPrice);
+
+/**
+ * @openapi
+ * /category/{id}:
+ *   delete:
+ *     tags:
+ *       - Category
+ *     summary: Removendo uma categoria pelo ID
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Categoria deletado com sucesso
+ *       404:
+ *         description: Categoria não encontrado
+ *       401:
+ *         description: Não autorizado
+ */
+app.delete("/category/:id", deleteCategories);
 
 export default app;

@@ -12,18 +12,17 @@ const port = 3000;
 
 app.use(express.json());
 
-app.use("/", userRoutes); // client account
-app.use("/", techRoutes); // tech account
-app.use("/", signIn); // sign-in in account
-
-app.use("/", category); // see the actually categories
-
-app.use("/", service); // tickets
-
-app.use("/", changePassword); // 
+app.use("/", userRoutes);
+app.use("/", techRoutes);
+app.use("/", signIn);
+app.use("/", category);
+app.use("/", service);
+app.use("/", changePassword);
 
 setupSwagger(app);
 
-app.listen(port, () => console.log(`App listening on port ${port}`));
+console.log("Bem vindo Desenvolvedor!");
+console.log("Acesse api-docs para ver todas as rotas!");
+app.listen(port, () => {});
 
-export default app
+export default app;

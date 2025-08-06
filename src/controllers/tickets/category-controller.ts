@@ -9,7 +9,7 @@ export const createCategories = async (req: Request, res: Response) => {
       name,
       basePrice,
     });
-    res.status(201).json({ message: "Create successfully category." });
+    res.status(201).json(createCategories);
   } catch (error) {
     console.log("Error in create categories.", error);
   }
@@ -94,5 +94,21 @@ export const putChangeNameOrPrice = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Fail on change activities:", error);
     res.status(400).json({ error: "Error in change activities." });
+  }
+};
+
+export const deleteCategories = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const response = await prisma.category.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error);
   }
 };

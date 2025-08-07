@@ -43,6 +43,15 @@ export const putClient = async (
 ) => {
   const { id } = req.params;
   const { username, email } = req.body;
+  const image = req.file?.filename;
+
+  if (!username) {
+    throw new Error("Inform your username.");
+  }
+  if (!email) {
+    throw new Error("Inform your email.");
+  }
+
   try {
     const existingUser = await prisma.user.findUnique({
       where: {
@@ -64,17 +73,22 @@ export const putClient = async (
       throw new Error("Already exists a person with this email.");
     }
 
-    const user = await prisma.user.update({
-      where: {
-        id: Number(id),
-      },
-      data: {
-        username: username,
-        email: email,
-      },
-    });
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
 
-    res.status(200).json(user);
+    try {
+      const updatedUser = await prisma.user.update({
+        where: { id: Number(id) },
+        data: {
+          username,
+          email,
+          profilePicture: image ? image : existingUser.profilePicture,
+        },
+      });
+      res.status(200).json({ message: "Perfil atualizado", user: updatedUser });
+    } catch (error) {
+      res.status(400).json({ error: "Erro ao atualizar perfil" });
+      console.log(error);
+    }
   } catch (error) {
     console.log("Error in search client.", error);
     res.status(400).json({ error: error });

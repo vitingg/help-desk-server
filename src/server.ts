@@ -22,7 +22,7 @@ app.use("/", changePassword);
 setupSwagger(app);
 
 console.log("Bem vindo Desenvolvedor!");
-console.log("Acesse api-docs para ver todas as rotas!");
+console.log("Acesse /api-docs para ver todas as rotas!");
 app.listen(port, () => {});
 
 export default app;

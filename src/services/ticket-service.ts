@@ -58,10 +58,10 @@ export interface ICreateCategoriesServiceInterface {
   basePrice: number;
 }
 
-export const createCategoriesService = async ({
+export async function createCategoriesService({
   name,
   basePrice,
-}: ICreateCategoriesServiceInterface) => {
+}: ICreateCategoriesServiceInterface) {
   const existsCategory = await categoryExists.findFirst(name);
   if (existsCategory) {
     throw new Error("Already exists one category with this name.");
@@ -73,4 +73,4 @@ export const createCategoriesService = async ({
   });
 
   return creatingCategory;
-};
+}

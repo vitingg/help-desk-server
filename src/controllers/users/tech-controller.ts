@@ -47,7 +47,8 @@ export const putTech = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-  const { username, email } = req.body;
+  const { username, email, workHours } = req.body;
+  const image = req.file?.filename;
 
   if (!username) {
     throw new Error("Inform your username.");
@@ -85,6 +86,8 @@ export const putTech = async (
       data: {
         username: username,
         email: email,
+        workHours: workHours,
+        profilePicture: image ? image : existingUser.profilePicture,
       },
     });
 

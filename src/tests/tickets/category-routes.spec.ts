@@ -3,6 +3,18 @@ import app from "@src/server";
 
 describe("category tests", () => {
   let categoryId: number;
+
+  beforeAll(async () => {
+    const response = await request(app).get("/all-categories");
+    const alreadyExists = await response.body.find(
+      (cat: any) => cat.name === "Teste category"
+    );
+
+    if (alreadyExists) {
+      throw new Error("Already exists one category with this name");
+    }
+  });
+
   it("should create a new category", async () => {
     const response = await request(app).post("/category").send({
       name: "Teste category",

@@ -21,8 +21,8 @@ describe("tickets tests", () => {
     let serviceId: number;
     it("should create a new service", async () => {
       const response = await request(app).post("/service").send({
-        title: "Teste service",
-        description: "descrição teste",
+        title: "Test service",
+        description: "Test description.",
         categoryId: 1,
         clientId: 2,
         techId: 3,

@@ -7,6 +7,7 @@ import {
   putClient,
   deleteClients,
 } from "@controllers/users/client-controller";
+import { upload } from "@src/middlewares/multer-memory";
 
 /**
  * @openapi
@@ -95,7 +96,7 @@ app.get("/clients", getClients);
  *       401:
  *         description: Não autorizado
  */
-app.put("/clients/:id", putClient);
+app.put("/clients/:id", upload.single("profilePicture"), putClient);
 
 /**
  * @openapi

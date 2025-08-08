@@ -9,12 +9,12 @@ export async function changePasswordController(
   const { oldPassword, newPassword } = req.body;
 
   if (!oldPassword || !newPassword) {
-    throw new Error("Invalid Credentials");
+    res.status(400).json({ message: "Invalid Credentials" });
   }
   const userIdFromToken = req.user?.userId;
 
   if (!userIdFromToken) {
-    throw new Error("No users informed!");
+    res.status(400).json({ message: "No users informed!" });
   }
 
   try {

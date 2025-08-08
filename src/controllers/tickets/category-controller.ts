@@ -49,7 +49,7 @@ export const putToggleActivities = async (req: Request, res: Response) => {
     });
 
     if (!existingCategory) {
-      throw new Error("Fail on search for category!");
+      res.status(400).json({ message: "Fail on search for category!" });
     }
 
     const categories = await prisma.category.update({
@@ -70,10 +70,11 @@ export const putToggleActivities = async (req: Request, res: Response) => {
 export const putChangeNameOrPrice = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { name, basePrice } = req.body;
+  const userId = Number(id);
   try {
     const existingCategory = await prisma.category.findUnique({
       where: {
-        id: Number(id),
+        id: userId,
       },
     });
 
@@ -83,7 +84,7 @@ export const putChangeNameOrPrice = async (req: Request, res: Response) => {
 
     const categories = await prisma.category.update({
       where: {
-        id: Number(id),
+        id: userId,
       },
       data: {
         name: name,

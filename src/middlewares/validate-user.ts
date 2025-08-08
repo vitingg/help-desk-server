@@ -10,7 +10,7 @@ export const validateUser =
       console.log(error);
       if (error instanceof ZodError) {
         res.status(400).json({
-          message: "Erro!",
+          message: "Error!",
           error: error.format(),
         });
         return;

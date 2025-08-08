@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { userServices } from "@src/services/user-service";
 import { prisma } from "@src/lib/prisma";
+import { cloudinary } from "@src/lib/cloudinary";
 
 export const createTech = async (req: Request, res: Response) => {
   try {
@@ -48,46 +49,61 @@ export const putTech = async (
 ) => {
   const { id } = req.params;
   const { username, email, workHours } = req.body;
-  const image = req.file?.filename;
+  const image = req.file;
+  const userId = Number(id);
 
-  if (!username) {
-    throw new Error("Inform your username.");
-  }
-  if (!email) {
-    throw new Error("Inform your email.");
+  if (!username || !email) {
+    res
+      .status(400)
+      .json({ message: "Inform your username or email correctly!" });
   }
 
   try {
     const existingUser = await prisma.user.findUnique({
       where: {
-        id: Number(id),
+        id: userId,
       },
     });
     if (!existingUser) {
-      throw new Error("Doesn't exists any techs with this credentials.");
+      res
+        .status(400)
+        .json({ message: "Doesn't exists any techs with this credentials." });
     }
-
     const emailAlreadyTaken = await prisma.user.findFirst({
       where: {
         email: email,
-        id: { not: Number(id) },
+        id: { not: userId },
       },
     });
-
     if (emailAlreadyTaken) {
-      throw new Error("Already exists a person with this email.");
+      res
+        .status(409)
+        .json({ message: "Already exists a person with this email." });
+    }
+
+    let imageUrl = existingUser.profilePicture;
+
+    if (image) {
+      const base64Image = `data:${
+        image.mimetype
+      };base64,${image.buffer.toString("base64")}`;
+
+      const result = await cloudinary.uploader.upload(base64Image, {
+        folder: "tech_profile_pictures",
+      });
+      imageUrl = result.secure_url;
     }
 
     const user = await prisma.user.update({
       where: {
-        id: Number(id),
+        id: userId,
         role: "TECH",
       },
       data: {
         username: username,
         email: email,
         workHours: workHours,
-        profilePicture: image ? image : existingUser.profilePicture,
+        profilePicture: imageUrl,
       },
     });
 

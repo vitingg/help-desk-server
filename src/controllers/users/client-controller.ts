@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { userServices } from "@src/services/user-service";
 import { prisma } from "@src/lib/prisma";
+import { cloudinary } from "@src/lib/cloudinary";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export const createClient = async (req: Request, res: Response) => {
   try {
@@ -43,52 +45,66 @@ export const putClient = async (
 ) => {
   const { id } = req.params;
   const { username, email } = req.body;
-  const image = req.file?.filename;
+  const image = req.file;
+  const userId = Number(id);
 
-  if (!username) {
-    throw new Error("Inform your username.");
+  if (isNaN(userId)) {
+    return res.status(400).json({ message: "User Id is invalid." });
   }
-  if (!email) {
-    throw new Error("Inform your email.");
+
+  if (!username || !email) {
+    res
+      .status(400)
+      .json({ message: "Username and email are obligatory.." });
   }
 
   try {
     const existingUser = await prisma.user.findUnique({
       where: {
-        id: Number(id),
+        id: userId,
       },
     });
     if (!existingUser) {
-      throw new Error("Doesn't exists any users with this credentials.");
+      res
+        .status(400)
+        .json({ message: "Doesn't exists any users with this credentials." });
     }
 
     const emailAlreadyTaken = await prisma.user.findFirst({
       where: {
         email: email,
-        id: { not: Number(id) },
+        id: { not: userId },
       },
     });
 
     if (emailAlreadyTaken) {
-      throw new Error("Already exists a person with this email.");
+      res
+        .status(409)
+        .json({ message: "Already exists a person with this email." });
     }
 
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
+    let imageUrl = existingUser.profilePicture;
+    if (image) {
+      const base64Image = `data:${
+        image.mimetype
+      };base64,${image.buffer.toString("base64")}`;
 
-    try {
-      const updatedUser = await prisma.user.update({
-        where: { id: Number(id) },
-        data: {
-          username,
-          email,
-          profilePicture: image ? image : existingUser.profilePicture,
-        },
+      const result = await cloudinary.uploader.upload(base64Image, {
+        folder: "client_profile_pictures",
       });
-      res.status(200).json({ message: "Perfil atualizado", user: updatedUser });
-    } catch (error) {
-      res.status(400).json({ error: "Erro ao atualizar perfil" });
-      console.log(error);
+
+      imageUrl = result.secure_url;
     }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        username,
+        email,
+        profilePicture: imageUrl,
+      },
+    });
+    res.status(200).json({ message: "Update user!", user: updatedUser });
   } catch (error) {
     console.log("Error in search client.", error);
     res.status(400).json({ error: error });
@@ -109,9 +125,12 @@ export const deleteClients = async (req: Request, res: Response) => {
     }
 
     const user = await prisma.user.delete({ where: { id: Number(id) } });
-    res.status(200).json({ message: "deleted successfully" });
+    res.status(200).json(user);
   } catch (error) {
-    if (error === "P2025") {
+    if (
+      error instanceof PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
       res.status(404).json({ error: "User not found!" });
     }
     console.log("Error in delete client.", error);

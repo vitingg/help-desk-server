@@ -7,7 +7,7 @@ describe("category tests", () => {
   beforeAll(async () => {
     const response = await request(app).get("/all-categories");
     const alreadyExists = await response.body.find(
-      (cat: any) => cat.name === "Teste category"
+      (cat: any) => cat.name === "Test category"
     );
 
     if (alreadyExists) {
@@ -17,7 +17,7 @@ describe("category tests", () => {
 
   it("should create a new category", async () => {
     const response = await request(app).post("/category").send({
-      name: "Teste category",
+      name: "Test category",
       basePrice: 100,
     });
 

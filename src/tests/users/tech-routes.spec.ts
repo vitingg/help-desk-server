@@ -5,7 +5,7 @@ describe("tech tests", () => {
   let token: string;
   let createdTechId: number;
 
-  // Duas operações, sign-in pra pegar token, usar o token pra criar um tech
+
   beforeAll(async () => {
     const login = await request(app).post("/sign-in").send({
       email: "Admin@gmail.com",
@@ -20,7 +20,7 @@ describe("tech tests", () => {
       .post("/techs")
       .set("Authorization", `Bearer ${token}`)
       .send({
-        username: "Teste tech",
+        username: "Test tech",
         email: "testtech@gmail.com",
         password: "testtech",
         role: "TECH",

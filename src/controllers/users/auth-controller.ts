@@ -27,7 +27,7 @@ export const getAdmins = async (
     });
     res.status(200).json(users);
   } catch (error) {
-    console.log("Erro ao buscar usuários");
+    console.log("Error on search users.");
     res.status(500).json({ error: error });
   }
 };

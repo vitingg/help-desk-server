@@ -5,7 +5,7 @@ describe("client tests", () => {
   let createdClientId: string;
   it("should create a new client", async () => {
     const response = await request(app).post("/clients").send({
-      username: "Teste client",
+      username: "Test client",
       email: "testclient@gmail.com",
       password: "testclient",
     });

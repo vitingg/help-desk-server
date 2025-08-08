@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { ticketService } from "@src/services/ticket-service";
 import { CreateTicketRequestDTO } from "@src/types/ticket";
 import { prisma } from "@src/lib/prisma";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export async function ticketController(req: Request, res: Response) {
   const { title, description, categoryId, clientId, techId } =
@@ -10,7 +11,7 @@ export async function ticketController(req: Request, res: Response) {
   if (!title || !description || !categoryId || !clientId || !techId) {
     return res.status(400).json({
       error:
-        "Todos os campos obrigatórios (title, description, categoryId, clientId, techId) devem ser fornecidos.",
+        "All required fields (title, description, categoryId, clientId, techId) must be provided.",
     });
   }
 
@@ -25,9 +26,9 @@ export async function ticketController(req: Request, res: Response) {
 
     return res.status(201).json(ticket);
   } catch (error) {
-    console.log("Erro ao criar o ticket", error);
+    console.log("Error in create ticket", error);
     return res.status(400).json({
-      message: error?.message || "Erro desconhecido ao criar ticket.",
+      message: error?.message || "Unknown error in ticket creation.",
     });
   }
 }
@@ -48,10 +49,12 @@ export const deleteTickets = async (req: Request, res: Response) => {
     const tickets = await prisma.service.delete({ where: { id: Number(id) } });
     res.status(200).json({ message: "Deleted successfully." });
   } catch (error) {
-    if (error === "P2025") {
+    if (
+      error instanceof PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
       res.status(404).json({ error: "Service not found!" });
     }
-    console.log("Error in delete service.");
-    res.status(500).json({ error: error });
+    console.log("Error in delete service.", error);
   }
 };

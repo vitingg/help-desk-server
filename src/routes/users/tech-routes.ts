@@ -6,6 +6,7 @@ import {
 } from "@controllers/users/tech-controller";
 import { authorize } from "@src/middlewares/authorize";
 import { app } from "@src/lib/app-express";
+import { upload } from "@src/middlewares/multer-memory";
 
 /**
  * @openapi
@@ -90,7 +91,12 @@ app.get("/techs", getTechs);
  *       401:
  *         description: Não autorizado
  */
-app.put("/techs/:id", authorize(["ADMIN"]), putTech);
+app.put(
+  "/techs/:id",
+  authorize(["ADMIN"]),
+  upload.single("profilePicture"),
+  putTech
+);
 
 /**
  * @openapi

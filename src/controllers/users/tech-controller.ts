@@ -58,6 +58,8 @@ export const putTech = async (
       .json({ message: "Inform your username or email correctly!" });
   }
 
+  const workHoursArray = typeof workHours === "string" ? JSON.parse(workHours) : workHours;
+
   try {
     const existingUser = await prisma.user.findUnique({
       where: {
@@ -102,7 +104,11 @@ export const putTech = async (
       data: {
         username: username,
         email: email,
-        workHours: workHours,
+        workHours: {
+          update: {
+            workTime: workHoursArray,
+          },
+        },
         profilePicture: imageUrl,
       },
     });

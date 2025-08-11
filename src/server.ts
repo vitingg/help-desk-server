@@ -1,18 +1,20 @@
 import changePassword from "./routes/users/change-password-routes";
 import category from "./routes/tickets/category-routes";
 import { setupSwagger } from "./utils/swagger-config";
-import userRoutes from "./routes/users/client-routes";
+import clientRoutes from "./routes/users/client-routes";
 import techRoutes from "./routes/users/tech-routes";
 import service from "./routes/tickets/ticket-routes";
 import signIn from "./routes/users/auth-routes";
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(cors());
 
-app.use("/", userRoutes);
+app.use("/", clientRoutes);
 app.use("/", techRoutes);
 app.use("/", signIn);
 app.use("/", category);

@@ -3,6 +3,7 @@ import { signInSchema } from "@src/schemas-zod/schemas";
 import { app } from "@src/lib/app-express";
 import {
   signInController,
+  signOutController,
   getAdmins,
 } from "@controllers/users/auth-controller";
 
@@ -50,6 +51,8 @@ import {
  *         description: Não autorizado (credenciais incorretas).
  */
 app.post("/sign-in", validateUser(signInSchema), signInController);
+
+app.post("/sign-out", signOutController);
 
 /**
  * @openapi

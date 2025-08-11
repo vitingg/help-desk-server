@@ -24,11 +24,13 @@ export const userServices = {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await userRepository.create({
+    const user = await userRepository.create({
       username,
       email,
       password: hashedPassword,
     });
+
+    const { password: _, ...newUser } = user;
 
     return newUser;
   },
@@ -47,7 +49,7 @@ export const userServices = {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await userRepository.create({
+    const user = await userRepository.create({
       username,
       email,
       password: hashedPassword,
@@ -58,6 +60,8 @@ export const userServices = {
         },
       },
     });
+
+    const { password: _, ...newUser } = user;
 
     return newUser;
   },
@@ -79,9 +83,11 @@ export const userServices = {
       { expiresIn: "3d" }
     );
 
+    const { password: _, ...newUser } = user;
+
     return {
       token,
-      user,
+      newUser,
     };
   },
 
@@ -97,16 +103,16 @@ export const userServices = {
     }
 
     if (oldPassword === newPassword) {
-      throw new Error("Cannot set the same password");
+      throw new Error("Cannot set old password. ");
     }
 
-    const { password, ...userWithoutPassword } = user;
+    const { password, ...newUser } = user;
 
     const newDatabasePassword = await bcrypt.hash(newPassword, 10);
     await userRepository.changePassword(userIdFromToken, newDatabasePassword);
 
     return {
-      userWithoutPassword,
+      newUser,
     };
   },
 };

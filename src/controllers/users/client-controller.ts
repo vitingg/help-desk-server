@@ -7,7 +7,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 export const createClient = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
-    const newUser = await userServices.createClientUser({
+    let newUser = await userServices.createClientUser({
       username,
       email,
       password,
@@ -29,6 +29,14 @@ export const getClients = async (
     const users = await prisma.user.findMany({
       where: {
         role: "CLIENT",
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        role: true,
+        createdAt: true,
+        profilePicture: true,
       },
     });
     res.status(200).json(users);
@@ -53,9 +61,7 @@ export const putClient = async (
   }
 
   if (!username || !email) {
-    res
-      .status(400)
-      .json({ message: "Username and email are obligatory.." });
+    res.status(400).json({ message: "Username and email are obligatory.." });
   }
 
   try {

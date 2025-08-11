@@ -31,8 +31,16 @@ export const getTechs = async (
       where: {
         role: "TECH",
       },
-      include: {
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        role: true,
+        createdAt: true,
+        profilePicture: true,
         workHours: true,
+        servicesAsTech: true,
+        servicesAsClient: true,
       },
     });
     res.status(200).json(users);
@@ -58,7 +66,8 @@ export const putTech = async (
       .json({ message: "Inform your username or email correctly!" });
   }
 
-  const workHoursArray = typeof workHours === "string" ? JSON.parse(workHours) : workHours;
+  const workHoursArray =
+    typeof workHours === "string" ? JSON.parse(workHours) : workHours;
 
   try {
     const existingUser = await prisma.user.findUnique({

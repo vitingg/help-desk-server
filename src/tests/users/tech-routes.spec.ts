@@ -2,9 +2,8 @@ import request from "supertest";
 import app from "@src/server";
 
 describe("tech tests", () => {
-  let token: string;
+  let cookie: string;
   let createdTechId: number;
-
 
   beforeAll(async () => {
     const login = await request(app).post("/sign-in").send({
@@ -12,29 +11,51 @@ describe("tech tests", () => {
       password: "AdminPassword",
     });
 
-    token = login.body.token;
+    cookie = login.headers["set-cookie"][0];
   });
 
   it("should create a new tech", async () => {
     const response = await request(app)
       .post("/techs")
-      .set("Authorization", `Bearer ${token}`)
+      .set("Cookie", `${cookie}`)
       .send({
         username: "Test tech",
         email: "testtech@gmail.com",
         password: "testtech",
-        role: "TECH",
       });
 
     expect(response.status).toBe(201);
     createdTechId = await response.body.id;
+    expect(response.body.user.username).toBe("Test tech");
+    createdTechId = response.body.user.id;
+  });
+
+  it("should get all techs", async () => {
+    const res = await request(app).get("/techs");
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+  });
+
+  it("should update the tech", async () => {
+    const updatedData = {
+      username: "Updated Test tech",
+      email: "updatedtech@gmail.com",
+    };
+
+    const res = await request(app)
+      .put(`/techs/${createdTechId}`)
+      .set("Cookie", cookie)
+      .send(updatedData);
+
+    expect(res.status).toBe(200);
+    expect(res.body.username).toBe(updatedData.username);
   });
 
   it("should delete the tech", async () => {
-    const response = request(app)
+    const response = await request(app)
       .delete(`/techs/${createdTechId}`)
-      .set("Authorization", `Bearer ${token}`);
+      .set("Cookie", `${cookie}`);
 
-    expect((await response).status).toBe(200);
+    expect(response.status).toBe(200);
   });
 });

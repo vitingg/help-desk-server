@@ -99,7 +99,7 @@ app.get("/available-categories", clientGetCategories);
  *         description: Não autorizado
  */
 // Only change the status (true/false)
-app.put("/category/:id", putToggleActivities);
+app.put("/category/toggle/:id", putToggleActivities);
 
 /**
  * @openapi
@@ -133,7 +133,7 @@ app.put("/category/:id", putToggleActivities);
  *       401:
  *         description: Não autorizado
  */
-app.put("/category/change-parameters/:id", putChangeNameOrPrice);
+app.put("/category/:id", putChangeNameOrPrice);
 
 /**
  * @openapi

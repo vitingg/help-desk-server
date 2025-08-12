@@ -1,17 +1,13 @@
 import { Request, Response } from "express";
 import { userServices } from "@src/services/user-service";
-import { AuthenticatedRequest } from "@src/middlewares/authorize";
 
-export async function changePasswordController(
-  req: AuthenticatedRequest,
-  res: Response
-) {
+export async function changePasswordController(req: Request, res: Response) {
   const { oldPassword, newPassword } = req.body;
+  const userIdFromToken = req.user?.userId;
 
   if (!oldPassword || !newPassword) {
     res.status(400).json({ message: "Invalid Credentials" });
   }
-  const userIdFromToken = req.user?.userId;
 
   if (!userIdFromToken) {
     res.status(400).json({ message: "No users informed!" });

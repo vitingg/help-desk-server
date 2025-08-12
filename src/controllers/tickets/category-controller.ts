@@ -4,6 +4,10 @@ import { createCategoriesService } from "@src/services/ticket-service";
 
 export const createCategories = async (req: Request, res: Response) => {
   const { name, basePrice } = req.body;
+  if (!name || !basePrice) {
+    res.status(400).json({ message: "Missing arguments." });
+  }
+
   try {
     const createCategories = await createCategoriesService({
       name,
@@ -12,6 +16,7 @@ export const createCategories = async (req: Request, res: Response) => {
     res.status(201).json(createCategories);
   } catch (error) {
     console.log("Error in create categories.", error);
+    res.status(400).json({ message: "Error in create category." });
   }
 };
 

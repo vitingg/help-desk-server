@@ -1,6 +1,5 @@
-import { Request, Response, type NextFunction } from "express";
+import { Request, Response } from "express";
 import { userServices } from "@src/services/user-service";
-import { prisma } from "@src/lib/prisma";
 import { userRepository } from "@src/repository/user-repository";
 
 export const signInController = async (req: Request, res: Response) => {
@@ -27,6 +26,7 @@ export const signInController = async (req: Request, res: Response) => {
 export const signOutController = async (req: Request, res: Response) => {
   try {
     res.clearCookie("token", { path: "/" });
+    res.status(200).json({ message: "Logout done." });
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: "Error in sign-out" });
@@ -39,7 +39,7 @@ export const getCurrentUser = async (req: Request, res: Response) => {
     const user = await userRepository.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      res.status(404).json({ message: "User not found" });
     }
 
     const { password, ...userData } = user;

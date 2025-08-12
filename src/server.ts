@@ -7,12 +7,19 @@ import service from "./routes/tickets/ticket-routes";
 import signIn from "./routes/users/auth-routes";
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 app.use("/", clientRoutes);
 app.use("/", techRoutes);

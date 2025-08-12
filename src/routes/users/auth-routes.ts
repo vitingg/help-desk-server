@@ -4,8 +4,9 @@ import { app } from "@src/lib/app-express";
 import {
   signInController,
   signOutController,
-  getAdmins,
+  getCurrentUser,
 } from "@controllers/users/auth-controller";
+import { authorize } from "@src/middlewares/authorize";
 
 /**
  * @openapi
@@ -54,19 +55,6 @@ app.post("/sign-in", validateUser(signInSchema), signInController);
 
 app.post("/sign-out", signOutController);
 
-/**
- * @openapi
- * /sign-in:
- *   get:
- *     tags:
- *       - Auth
- *     summary: Lista todos os admins
- *     responses:
- *       200:
- *         description: Admins retornados com sucesso
- *       401:
- *         description: Não autorizado
- */
-app.get("/sign-in", getAdmins);
+app.get("/me", authorize(), getCurrentUser);
 
 export default app;

@@ -98,6 +98,7 @@ app.get("/available-categories", clientGetCategories);
  *       401:
  *         description: Não autorizado
  */
+// Only change the status (true/false)
 app.put("/category/:id", putToggleActivities);
 
 /**

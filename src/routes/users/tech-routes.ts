@@ -91,12 +91,7 @@ app.get("/techs", getTechs);
  *       401:
  *         description: Não autorizado
  */
-app.put(
-  "/techs/:id",
-  authorize(["ADMIN"]),
-  upload.single("profilePicture"),
-  putTech
-);
+app.put("/techs/:id", upload.single("profilePicture"), putTech);
 
 /**
  * @openapi

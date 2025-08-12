@@ -1,6 +1,7 @@
 import { Request, Response, type NextFunction } from "express";
 import { userServices } from "@src/services/user-service";
 import { prisma } from "@src/lib/prisma";
+import { userRepository } from "@src/repository/user-repository";
 
 export const signInController = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -32,27 +33,22 @@ export const signOutController = async (req: Request, res: Response) => {
   }
 };
 
-export const getAdmins = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getCurrentUser = async (req: Request, res: Response) => {
   try {
-    const users = await prisma.user.findMany({
-      where: {
-        role: "ADMIN",
-      },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        role: true,
-        createdAt: true,
-      },
-    });
-    res.status(200).json(users);
+    const userId = req.user!.userId;
+    const user = await userRepository.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const { password, ...userData } = user;
+    res.status(200).json(userData);
   } catch (error) {
-    console.log("Error on search users.");
-    res.status(500).json({ error: error });
+    console.error("Error fetching current user:", error);
+    res.status(400).json({
+      message: "Error on fetching current user",
+      error: error.message,
+    });
   }
 };

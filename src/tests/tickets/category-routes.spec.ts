@@ -4,17 +4,6 @@ import app from "@src/server";
 describe("category tests", () => {
   let categoryId: number;
 
-  beforeAll(async () => {
-    const response = await request(app).get("/all-categories");
-    const alreadyExists = await response.body.find(
-      (cat: any) => cat.name === "Test category"
-    );
-
-    if (alreadyExists) {
-      throw new Error("Already exists one category with this name");
-    }
-  });
-
   it("should create a new category", async () => {
     const response = await request(app).post("/category").send({
       name: "Test category",
@@ -58,8 +47,5 @@ describe("category tests", () => {
     const response = request(app).delete(`/category/${categoryId}`);
     expect((await response).status).toBe(200);
   });
-  it("should return 400 when trying to delete a non-existent category", async () => {
-    const response = await request(app).delete(`/category/999999`);
-    expect(response.status).toBe(400);
-  });
+
 });

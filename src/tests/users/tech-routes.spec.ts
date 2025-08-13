@@ -26,8 +26,7 @@ describe("tech tests", () => {
 
     expect(response.status).toBe(201);
     createdTechId = await response.body.id;
-    expect(response.body.user.username).toBe("Test tech");
-    createdTechId = response.body.user.id;
+    expect(response.body.username).toBe("Test tech");
   });
 
   it("should get all techs", async () => {

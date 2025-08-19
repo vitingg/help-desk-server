@@ -15,8 +15,7 @@ export const createClient = async (req: Request, res: Response) => {
 
     res.status(201).json(newUser);
   } catch (error) {
-    console.log("Error in create user.");
-    res.status(500).json({ error: "Error in client controller" + error });
+    res.status(500).json({ error: "Error in create user: " + error });
   }
 };
 

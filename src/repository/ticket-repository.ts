@@ -6,6 +6,26 @@ export const ticketRepository = {
   create: async (data: Prisma.ServiceCreateInput) => {
     return prisma.service.create({
       data,
+      include: {
+        client: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+        tech: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+        category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
   },
 };

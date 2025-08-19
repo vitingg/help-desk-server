@@ -35,7 +35,29 @@ export async function ticketController(req: Request, res: Response) {
 
 export async function getTickets(req: Request, res: Response) {
   try {
-    const tickets = await prisma.service.findMany();
+    const tickets = await prisma.service.findMany({
+      include: {
+        client: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+        tech: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+        category: {
+          select: {
+            id: true,
+            name: true,
+            basePrice: true,
+          },
+        },
+      },
+    });
     res.status(200).json(tickets);
   } catch (error) {
     console.log("Error in find services.");

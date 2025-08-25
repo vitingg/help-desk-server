@@ -4,7 +4,7 @@ import { CreateTicketRequestDTO } from "@src/types/ticket";
 import { prisma } from "@src/lib/prisma";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-export async function ticketController(req: Request, res: Response) {
+export async function createTicket(req: Request, res: Response) {
   const { title, description, categoryId, clientId, techId } =
     req.body as CreateTicketRequestDTO;
 
@@ -65,7 +65,7 @@ export async function getTickets(req: Request, res: Response) {
   }
 }
 
-export const deleteTickets = async (req: Request, res: Response) => {
+export async function deleteTickets(req: Request, res: Response) {
   const { id } = req.params;
   try {
     const tickets = await prisma.service.delete({ where: { id: Number(id) } });
@@ -79,4 +79,35 @@ export const deleteTickets = async (req: Request, res: Response) => {
     }
     console.log("Error in delete service.", error);
   }
-};
+}
+
+export async function patchTicketStatus(req: Request, res: Response) {
+  const { id } = req.params;
+  const { status } = req.body;
+  const ticketId = Number(id);
+
+  try {
+    const existingService = await prisma.service.findUnique({
+      where: {
+        id: ticketId,
+      },
+    });
+
+    if (!existingService) {
+      throw new Error("Fail on search for service!");
+    }
+
+    const ticket = await prisma.service.update({
+      where: {
+        id: ticketId,
+      },
+      data: {
+        status: status,
+      },
+    });
+    res.status(200).json(ticket);
+  } catch (error) {
+    console.error("Fail on change activities:", error);
+    res.status(400).json({ error: "Error in change activities." });
+  }
+}

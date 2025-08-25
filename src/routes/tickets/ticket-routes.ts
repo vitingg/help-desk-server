@@ -1,8 +1,9 @@
 import { app } from "@src/lib/app-express";
 import {
-  ticketController,
+  createTicket,
   getTickets,
   deleteTickets,
+  patchTicketStatus,
 } from "@controllers/tickets/ticket-controller";
 
 /**
@@ -26,7 +27,7 @@ import {
  *       401:
  *         description: Não autorizado
  */
-app.post("/service", ticketController);
+app.post("/services", createTicket);
 
 /**
  * @openapi
@@ -41,7 +42,9 @@ app.post("/service", ticketController);
  *       401:
  *         description: Não autorizado
  */
-app.get("/service", getTickets);
+app.get("/services", getTickets);
+
+app.patch("/service/:id/change-status", patchTicketStatus);
 
 /**
  * @openapi
@@ -67,6 +70,6 @@ app.get("/service", getTickets);
  *       500:
  *         description: Erro interno do servidor.
  */
-app.delete("/service/:id", deleteTickets);
+app.delete("/services/:id", deleteTickets);
 
 export default app;

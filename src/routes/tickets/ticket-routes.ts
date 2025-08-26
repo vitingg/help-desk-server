@@ -44,7 +44,8 @@ app.post("/services", createTicket);
  */
 app.get("/services", getTickets);
 
-app.patch("/service/:id/change-status", patchTicketStatus);
+// precisa do swagger
+app.patch("/services/:id/change-status", patchTicketStatus);
 
 /**
  * @openapi

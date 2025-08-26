@@ -3,7 +3,7 @@ import {
   createCategories,
   getCategories,
   clientGetCategories,
-  putToggleActivities,
+  patchToggleActivities,
   putChangeNameOrPrice,
   deleteCategories,
 } from "@src/controllers/tickets/category-controller";
@@ -99,7 +99,7 @@ app.get("/categories/available-categories", clientGetCategories);
  *         description: Não autorizado
  */
 // Only change the status (true/false)
-app.put("/categories/toggle/:id", putToggleActivities);
+app.put("/categories/toggle/:id", patchToggleActivities);
 
 /**
  * @openapi

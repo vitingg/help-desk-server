@@ -44,7 +44,7 @@ export const clientGetCategories = async (req: Request, res: Response) => {
   }
 };
 
-export const putToggleActivities = async (req: Request, res: Response) => {
+export const patchToggleActivities = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const existingCategory = await prisma.category.findUnique({

@@ -25,7 +25,7 @@ export const getClients = async (
   next: NextFunction
 ) => {
   try {
-    const users = await prisma.user.findMany({
+    const clients = await prisma.user.findMany({
       where: {
         role: "CLIENT",
       },
@@ -38,7 +38,7 @@ export const getClients = async (
         profilePicture: true,
       },
     });
-    res.status(200).json(users);
+    res.status(200).json({clients: clients});
   } catch (error) {
     console.log("Error in search client.");
     res.status(500).json({ error: error });

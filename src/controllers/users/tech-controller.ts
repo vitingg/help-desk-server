@@ -27,7 +27,7 @@ export const getTechs = async (
   next: NextFunction
 ) => {
   try {
-    const users = await prisma.user.findMany({
+    const techs = await prisma.user.findMany({
       where: {
         role: "TECH",
       },
@@ -43,7 +43,7 @@ export const getTechs = async (
         servicesAsClient: true,
       },
     });
-    res.status(200).json(users);
+    res.status(200).json({ techs: techs });
   } catch (error) {
     console.log("Error in search techs.");
     res.status(500).json({ error: error });

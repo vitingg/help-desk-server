@@ -23,7 +23,7 @@ export const createCategories = async (req: Request, res: Response) => {
 export const getCategories = async (req: Request, res: Response) => {
   try {
     const categories = await prisma.category.findMany({});
-    res.status(200).json(categories);
+    res.status(200).json({ category: categories });
   } catch (error) {
     console.error("Error on search all categories:", error);
     res.status(400).json({ error: "Error on search all categories." });

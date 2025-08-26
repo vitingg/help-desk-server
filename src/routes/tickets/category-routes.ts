@@ -10,10 +10,10 @@ import {
 
 /**
  * @openapi
- * /category:
+ * /categories:
  *   post:
  *     tags:
- *       - Category
+ *       - Categories
  *     summary: Cria uma nova categoria
  *     requestBody:
  *       required: true
@@ -37,7 +37,7 @@ import {
  *       401:
  *         description: Não autorizado
  */
-app.post("/category", createCategories);
+app.post("/categories", createCategories);
 
 /**
  * @openapi
@@ -45,7 +45,7 @@ app.post("/category", createCategories);
  *   get:
  *     summary: Lista todas as categorias
  *     tags:
- *       - Category
+ *       - Categories
  *     responses:
  *       200:
  *         description: OK
@@ -54,9 +54,9 @@ app.post("/category", createCategories);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Category'
+ *                 $ref: '#/components/schemas/categories'
  */
-app.get("/all-categories", getCategories);
+app.get("/categories/all-categories", getCategories);
 
 /**
  * @openapi
@@ -64,7 +64,7 @@ app.get("/all-categories", getCategories);
  *   get:
  *     summary: Lista todas as categorias disponíveis (true)
  *     tags:
- *       - Category
+ *       - Categories
  *     responses:
  *       200:
  *         description: OK
@@ -73,16 +73,16 @@ app.get("/all-categories", getCategories);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Category'
+ *                 $ref: '#/components/schemas/categories'
  */
-app.get("/available-categories", clientGetCategories);
+app.get("/categories/available-categories", clientGetCategories);
 
 /**
  * @openapi
- * /category/{id}:
+ * /categories/{id}:
  *   put:
  *     tags:
- *       - Category
+ *       - Categories
  *     summary: Atualizar um status da categoria
  *     parameters:
  *       - name: id
@@ -99,14 +99,14 @@ app.get("/available-categories", clientGetCategories);
  *         description: Não autorizado
  */
 // Only change the status (true/false)
-app.put("/category/toggle/:id", putToggleActivities);
+app.put("/categories/toggle/:id", putToggleActivities);
 
 /**
  * @openapi
- * /category/change-parameters/{id}:
+ * /categories/change-parameters/{id}:
  *   put:
  *     tags:
- *       - Category
+ *       - Categories
  *     summary: Atualizar uma categoria por ID
  *     parameters:
  *       - name: id
@@ -133,14 +133,14 @@ app.put("/category/toggle/:id", putToggleActivities);
  *       401:
  *         description: Não autorizado
  */
-app.put("/category/:id", putChangeNameOrPrice);
+app.put("/categories/:id", putChangeNameOrPrice);
 
 /**
  * @openapi
- * /category/{id}:
+ * /categories/{id}:
  *   delete:
  *     tags:
- *       - Category
+ *       - Categories
  *     summary: Removendo uma categoria pelo ID
  *     parameters:
  *       - name: id
@@ -156,6 +156,6 @@ app.put("/category/:id", putChangeNameOrPrice);
  *       401:
  *         description: Não autorizado
  */
-app.delete("/category/:id", deleteCategories);
+app.delete("/categories/:id", deleteCategories);
 
 export default app;

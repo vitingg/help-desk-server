@@ -58,7 +58,7 @@ export async function getTickets(req: Request, res: Response) {
         },
       },
     });
-    res.status(200).json(tickets);
+    res.status(200).json({ tickets: tickets });
   } catch (error) {
     console.log("Error in find services.");
     res.status(500).json({ error: error });

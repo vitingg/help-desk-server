@@ -4,6 +4,7 @@ import {
   getTickets,
   deleteTickets,
   patchTicketStatus,
+  getTicketsById,
 } from "@controllers/tickets/ticket-controller";
 
 /**
@@ -43,6 +44,9 @@ app.post("/services", createTicket);
  *         description: Não autorizado
  */
 app.get("/services", getTickets);
+
+// Também precisa de swagger.
+app.get("/services/:id", getTicketsById);
 
 // precisa do swagger
 app.patch("/services/:id/change-status", patchTicketStatus);

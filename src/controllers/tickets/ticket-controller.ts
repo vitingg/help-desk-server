@@ -61,7 +61,57 @@ export async function getTickets(req: Request, res: Response) {
     res.status(200).json({ tickets: tickets });
   } catch (error) {
     console.log("Error in find services.");
-    res.status(500).json({ error: error });
+    res.status(400).json({ error: error });
+  }
+}
+
+export async function getTicketsById(req: Request, res: Response) {
+  const { id } = req.params;
+  const ticketId = Number(id);
+
+  try {
+    const existingTicket = await prisma.service.findUnique({
+      where: {
+        id: ticketId,
+      },
+    });
+
+    if (!existingTicket) {
+      res
+        .status(400)
+        .json({ message: "Doesn't exists any category with this Id." });
+    }
+
+    const tickets = await prisma.service.findUnique({
+      where: {
+        id: ticketId,
+      },
+      include: {
+        client: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+        tech: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+        category: {
+          select: {
+            id: true,
+            name: true,
+            basePrice: true,
+          },
+        },
+      },
+    });
+    res.status(200).json({ tickets: tickets });
+  } catch (error) {
+    console.log("Error in find services.");
+    res.status(400).json({ error: error });
   }
 }
 

@@ -6,6 +6,7 @@ import {
   getClients,
   putClient,
   deleteClients,
+  getOneClient,
 } from "@controllers/users/client-controller";
 import { upload } from "@src/middlewares/multer-memory";
 
@@ -62,6 +63,8 @@ app.post("/clients", validateUser(signUpSchema), createClient);
  *                 $ref: '#/components/schemas/Client'
  */
 app.get("/clients", getClients);
+
+app.get("/clients/:id", getOneClient);
 
 /**
  * @openapi

@@ -3,6 +3,7 @@ import {
   getTechs,
   putTech,
   deleteTech,
+  getOneTech,
 } from "@controllers/users/tech-controller";
 import { authorize } from "@src/middlewares/authorize";
 import { app } from "@src/lib/app-express";
@@ -57,6 +58,9 @@ app.post("/techs", authorize(["ADMIN"]), createTech);
  *         description: Não autorizado
  */
 app.get("/techs", getTechs);
+
+// Precisa de swagger
+app.get("/techs/:id", getOneTech);
 
 /**
  * @openapi

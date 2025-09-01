@@ -15,7 +15,7 @@ export const createClient = async (req: Request, res: Response) => {
 
     res.status(201).json(newUser);
   } catch (error) {
-    res.status(500).json({ error: "Error in create user: " + error });
+    res.status(400).json({ error: "Error in create user: " + error });
   }
 };
 
@@ -38,10 +38,51 @@ export const getClients = async (
         profilePicture: true,
       },
     });
-    res.status(200).json({clients: clients});
+    res.status(200).json({ clients: clients });
   } catch (error) {
     console.log("Error in search client.");
-    res.status(500).json({ error: error });
+    res.status(400).json({ error: error });
+  }
+};
+
+export const getOneClient = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  const clientId = Number(id);
+
+  try {
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        id: clientId,
+        role: "CLIENT",
+      },
+    });
+
+    if (!existingUser) {
+      res
+        .status(400)
+        .json({ message: "Doesn`t find any client with this credentials." });
+    }
+
+    const client = await prisma.user.findFirst({
+      where: {
+        id: clientId,
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        createdAt: true,
+        profilePicture: true,
+      },
+    });
+    res.status(200).json({ client: client });
+  } catch (error) {
+    console.log("Error in search client.");
+    res.status(400).json({ error: error });
   }
 };
 

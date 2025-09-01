@@ -50,6 +50,51 @@ export const getTechs = async (
   }
 };
 
+export const getOneTech = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  const techId = Number(id);
+
+  try {
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        id: techId,
+        role: "TECH",
+      },
+    });
+
+    if (!existingUser) {
+      res
+        .status(400)
+        .json({ message: "Doesn`t exists any tech with this id." });
+    }
+
+    const techs = await prisma.user.findUnique({
+      where: {
+        id: techId,
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        role: true,
+        createdAt: true,
+        profilePicture: true,
+        workHours: true,
+        servicesAsTech: true,
+        servicesAsClient: true,
+      },
+    });
+    res.status(200).json({ techs: techs });
+  } catch (error) {
+    console.log("Error in search techs.");
+    res.status(500).json({ error: error });
+  }
+};
+
 export const putTech = async (
   req: Request,
   res: Response,

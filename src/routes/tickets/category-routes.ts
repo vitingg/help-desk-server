@@ -6,6 +6,7 @@ import {
   patchToggleActivities,
   putChangeNameOrPrice,
   deleteCategories,
+  getOneCategory,
 } from "@src/controllers/tickets/category-controller";
 
 /**
@@ -56,7 +57,9 @@ app.post("/categories", createCategories);
  *               items:
  *                 $ref: '#/components/schemas/categories'
  */
-app.get("/categories/all-categories", getCategories);
+app.get("/categories/", getCategories);
+
+app.get("/categories/:id", getOneCategory);
 
 /**
  * @openapi
@@ -76,6 +79,7 @@ app.get("/categories/all-categories", getCategories);
  *                 $ref: '#/components/schemas/categories'
  */
 app.get("/categories/available-categories", clientGetCategories);
+
 
 /**
  * @openapi

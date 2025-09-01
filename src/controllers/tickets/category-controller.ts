@@ -30,6 +30,22 @@ export const getCategories = async (req: Request, res: Response) => {
   }
 };
 
+export const getOneCategory = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const categoryId = Number(id);
+  try {
+    const categories = await prisma.category.findFirst({
+      where: {
+        id: categoryId,
+      },
+    });
+    res.status(200).json({ category: categories });
+  } catch (error) {
+    console.error("Error on search one category:", error);
+    res.status(400).json({ error: "Error on search one category." });
+  }
+};
+
 export const clientGetCategories = async (req: Request, res: Response) => {
   try {
     const categories = await prisma.category.findMany({

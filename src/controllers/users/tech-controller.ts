@@ -167,7 +167,9 @@ export const putTech = async (
       },
     });
 
-    res.status(200).json(user);
+    const { password, ...safeUser } = user;
+
+    res.status(200).json(safeUser);
   } catch (error) {
     console.log("Error in search client.", error);
     res.status(400).json({ error: error });

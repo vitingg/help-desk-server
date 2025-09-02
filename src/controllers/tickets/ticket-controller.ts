@@ -97,6 +97,7 @@ export async function getTicketsById(req: Request, res: Response) {
           select: {
             id: true,
             username: true,
+            email: true
           },
         },
         category: {

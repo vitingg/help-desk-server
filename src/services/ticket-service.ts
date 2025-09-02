@@ -12,9 +12,16 @@ import {
 import { prisma } from "@src/lib/prisma";
 
 export async function ticketService(data: CreateTicketRequestDTO) {
-  const { title, description, categoryId, clientId, techId } = data;
+  const {
+    title,
+    description,
+    clientId,
+    techId,
+    baseCategoryId,
+    additionalCategoryIds = [],
+  } = data;
 
-  const categoryExists = await categoryRepository.findById(categoryId);
+  const categoryExists = await categoryRepository.findById(baseCategoryId);
   const clientExists = await clientRepository.findById(clientId);
   const techExists = await techRepository.findById(techId);
 
@@ -27,30 +34,37 @@ export async function ticketService(data: CreateTicketRequestDTO) {
   if (!techExists) {
     throw new Error("Technician not founded!");
   }
+  const newTicket = await prisma.$transaction(async (tx) => {
+    const ticket = await tx.service.create({
+      data: {
+        title,
+        description,
+        clientId,
+        techId,
+      },
+    });
+    await tx.serviceCategory.create({
+      data: {
+        serviceId: ticket.id,
+        categoryId: baseCategoryId,
+        type: "BASE",
+      },
+    });
+    if (additionalCategoryIds.length > 0) {
+      const additionalData = additionalCategoryIds.map((catId) => ({
+        serviceId: ticket.id,
+        categoryId: catId,
+        type: "ADDITIONAL" as const,
+      }));
 
-  const currentService = await prisma.category.findFirst({
-    where: {
-      id: categoryId,
-    },
+      await tx.serviceCategory.createMany({
+        data: additionalData,
+      });
+
+      return ticket;
+    }
   });
-
-  const serviceData = {
-    title: title.trim(),
-    description: description?.trim() || "",
-    category: {
-      connect: { id: categoryId },
-    },
-    client: {
-      connect: { id: clientId },
-    },
-    tech: {
-      connect: { id: techId },
-    },
-  };
-  const service = await ticketRepository.create(serviceData);
-  const addService = { service, currentService };
-
-  return addService;
+  return newTicket;
 }
 
 export interface ICreateCategoriesServiceInterface {

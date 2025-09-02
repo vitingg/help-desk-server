@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "tsx watch --env-file=.env src/server.ts",
     "test": "npx jest --runInBand",
-    "test:table": "npx jest --coverage"
+    "test:table": "npx jest --coverage",
+    "seed": "ts-node prisma/seed.ts"
   },
   "keywords": [],
   "author": "Victor",

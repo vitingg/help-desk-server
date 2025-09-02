@@ -5,13 +5,19 @@ import { prisma } from "@src/lib/prisma";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export async function createTicket(req: Request, res: Response) {
-  const { title, description, categoryId, clientId, techId } =
-    req.body as CreateTicketRequestDTO;
+  const {
+    title,
+    description,
+    baseCategoryId,
+    clientId,
+    techId,
+    additionalCategoryIds,
+  } = req.body as CreateTicketRequestDTO;
 
-  if (!title || !description || !categoryId || !clientId || !techId) {
+  if (!title || !description || !clientId || !techId || !baseCategoryId) {
     return res.status(400).json({
       error:
-        "All required fields (title, description, categoryId, clientId, techId) must be provided.",
+        "All required fields (title, description, baseCategoryId, clientId, techId) must be provided.",
     });
   }
 
@@ -19,7 +25,8 @@ export async function createTicket(req: Request, res: Response) {
     const ticket = await ticketService({
       title,
       description,
-      categoryId,
+      baseCategoryId,
+      additionalCategoryIds,
       clientId,
       techId,
     });
@@ -49,11 +56,13 @@ export async function getTickets(req: Request, res: Response) {
             username: true,
           },
         },
-        category: {
-          select: {
-            id: true,
-            name: true,
-            basePrice: true,
+        categories: {
+          include: {
+            category: {
+              include: {
+                services: true,
+              },
+            },
           },
         },
       },
@@ -87,6 +96,11 @@ export async function getTicketsById(req: Request, res: Response) {
         id: ticketId,
       },
       include: {
+        categories: {
+          include: {
+            category: true,
+          },
+        },
         client: {
           select: {
             id: true,
@@ -97,14 +111,7 @@ export async function getTicketsById(req: Request, res: Response) {
           select: {
             id: true,
             username: true,
-            email: true
-          },
-        },
-        category: {
-          select: {
-            id: true,
-            name: true,
-            basePrice: true,
+            email: true,
           },
         },
       },

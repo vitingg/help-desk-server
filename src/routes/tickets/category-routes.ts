@@ -59,11 +59,9 @@ app.post("/categories", createCategories);
  */
 app.get("/categories/", getCategories);
 
-app.get("/categories/:id", getOneCategory);
-
 /**
  * @openapi
- * /available-categories:
+ * /categories/available-categories:
  *   get:
  *     summary: Lista todas as categorias disponíveis (true)
  *     tags:
@@ -80,6 +78,7 @@ app.get("/categories/:id", getOneCategory);
  */
 app.get("/categories/available-categories", clientGetCategories);
 
+app.get("/categories/:id", getOneCategory);
 
 /**
  * @openapi

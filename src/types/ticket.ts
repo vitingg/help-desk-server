@@ -1,7 +1,8 @@
 export interface CreateTicketRequestDTO {
   title: string;
   description?: string;
-  categoryId: number;
+  baseCategoryId: number;
   clientId: number;
   techId: number;
+  additionalCategoryIds?: number[]
 }

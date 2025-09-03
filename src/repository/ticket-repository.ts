@@ -19,10 +19,9 @@ export const ticketRepository = {
             username: true,
           },
         },
-        category: {
-          select: {
-            id: true,
-            name: true,
+        categories: {
+          include: {
+            category: true,
           },
         },
       },

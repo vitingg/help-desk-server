@@ -5,6 +5,7 @@ import {
   deleteTickets,
   patchTicketStatus,
   getTicketsById,
+  patchTicketAdditionalCategory,
 } from "@controllers/tickets/ticket-controller";
 
 /**
@@ -50,6 +51,8 @@ app.get("/services/:id", getTicketsById);
 
 // precisa do swagger
 app.patch("/services/:id/change-status", patchTicketStatus);
+
+app.patch("/services/:id/additional-categories", patchTicketAdditionalCategory);
 
 /**
  * @openapi

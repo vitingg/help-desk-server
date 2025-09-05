@@ -123,22 +123,6 @@ export async function getTicketsById(req: Request, res: Response) {
   }
 }
 
-export async function deleteTickets(req: Request, res: Response) {
-  const { id } = req.params;
-  try {
-    const tickets = await prisma.service.delete({ where: { id: Number(id) } });
-    res.status(200).json({ message: "Deleted successfully." });
-  } catch (error) {
-    if (
-      error instanceof PrismaClientKnownRequestError &&
-      error.code === "P2025"
-    ) {
-      res.status(404).json({ error: "Service not found!" });
-    }
-    console.log("Error in delete service.", error);
-  }
-}
-
 export async function patchTicketStatus(req: Request, res: Response) {
   const { id } = req.params;
   const { status } = req.body;
@@ -167,5 +151,79 @@ export async function patchTicketStatus(req: Request, res: Response) {
   } catch (error) {
     console.error("Fail on change activities:", error);
     res.status(400).json({ error: "Error in change activities." });
+  }
+}
+
+export async function patchTicketAdditionalCategory(
+  req: Request,
+  res: Response
+) {
+  const { id } = req.params;
+  const { additionalCategoryIds } = req.body as {
+    additionalCategoryIds: number[];
+  };
+  const ticketId = Number(id);
+
+  if (!Array.isArray(additionalCategoryIds)) {
+    return res
+      .status(400)
+      .json({ error: "AdditionalCategoryIds must be an array." });
+  }
+
+  try {
+    const existingService = await prisma.service.findUnique({
+      where: {
+        id: ticketId,
+      },
+    });
+
+    if (!existingService) {
+      throw new Error("Fail on search for service!");
+    }
+
+    const existingRelations = await prisma.serviceCategory.findMany({
+      where: { serviceId: ticketId, categoryId: { in: additionalCategoryIds } },
+    });
+
+    const newIds = additionalCategoryIds.filter(
+      (id) => !existingRelations.some((rel) => rel.categoryId === id)
+    );
+
+    const ticket = await prisma.service.update({
+      where: { id: ticketId },
+      data: {
+        categories: {
+          create: additionalCategoryIds.map((categoryId) => ({
+            categoryId,
+            type: "ADDITIONAL",
+          })),
+        },
+      },
+      include: {
+        categories: {
+          include: { category: true },
+        },
+      },
+    });
+    res.status(200).json(ticket);
+  } catch (error) {
+    console.error("Fail on change activities:", error);
+    res.status(400).json({ error: "Error in change activities." });
+  }
+}
+
+export async function deleteTickets(req: Request, res: Response) {
+  const { id } = req.params;
+  try {
+    const tickets = await prisma.service.delete({ where: { id: Number(id) } });
+    res.status(200).json({ message: "Deleted successfully." });
+  } catch (error) {
+    if (
+      error instanceof PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      res.status(404).json({ error: "Service not found!" });
+    }
+    console.log("Error in delete service.", error);
   }
 }

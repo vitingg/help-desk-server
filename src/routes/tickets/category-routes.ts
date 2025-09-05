@@ -57,7 +57,7 @@ app.post("/categories", createCategories);
  *               items:
  *                 $ref: '#/components/schemas/categories'
  */
-app.get("/categories/", getCategories);
+app.get("/categories", getCategories);
 
 /**
  * @openapi

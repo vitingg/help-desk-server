@@ -16,14 +16,12 @@ export async function ticketService(data: CreateTicketRequestDTO) {
     title,
     description,
     clientId,
-    techId,
     baseCategoryId,
     additionalCategoryIds = [],
   } = data;
 
   const categoryExists = await categoryRepository.findById(baseCategoryId);
   const clientExists = await clientRepository.findById(clientId);
-  const techExists = await techRepository.findById(techId);
 
   if (!categoryExists) {
     throw new Error("Category not founded!");
@@ -31,16 +29,12 @@ export async function ticketService(data: CreateTicketRequestDTO) {
   if (!clientExists) {
     throw new Error("Client not founded!");
   }
-  if (!techExists) {
-    throw new Error("Technician not founded!");
-  }
   const newTicket = await prisma.$transaction(async (tx) => {
     const ticket = await tx.service.create({
       data: {
         title,
         description,
         clientId,
-        techId,
       },
     });
     await tx.serviceCategory.create({

@@ -49,7 +49,7 @@ status ServiceStatus @default(PENDING)
 
 
 clientId Int
-techId Int
+techId Int?
 
 categories  ServiceCategory[]
 
@@ -57,7 +57,7 @@ createdAt DateTime @default(now())
 updatedAt DateTime @updatedAt
 
 client User @relation("ClientServices", fields: [clientId], references: [id])
-tech User @relation("TechServices", fields: [techId], references: [id])
+tech User? @relation("TechServices", fields: [techId], references: [id])
 }
 
 // Categorias responsáveis por dar preço aos serviços.

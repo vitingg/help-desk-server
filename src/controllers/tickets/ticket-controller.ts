@@ -10,14 +10,13 @@ export async function createTicket(req: Request, res: Response) {
     description,
     baseCategoryId,
     clientId,
-    techId,
     additionalCategoryIds,
   } = req.body as CreateTicketRequestDTO;
 
-  if (!title || !description || !clientId || !techId || !baseCategoryId) {
+  if (!title || !description || !clientId || !baseCategoryId) {
     return res.status(400).json({
       error:
-        "All required fields (title, description, baseCategoryId, clientId, techId) must be provided.",
+        "All required fields (title, description, baseCategoryId, clientId) must be provided.",
     });
   }
 
@@ -28,7 +27,6 @@ export async function createTicket(req: Request, res: Response) {
       baseCategoryId,
       additionalCategoryIds,
       clientId,
-      techId,
     });
 
     return res.status(201).json(ticket);

@@ -64,6 +64,31 @@ app.post("/clients", validateUser(signUpSchema), createClient);
  */
 app.get("/clients", getClients);
 
+/**
+ * @openapi
+ * /clients/{id}:
+ *   get:
+ *     tags:
+ *       - Client
+ *     summary: Buscar um cliente pelo ID
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Cliente encontrado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Client'
+ *       404:
+ *         description: Cliente não encontrado
+ *       401:
+ *         description: Não autorizado
+ */
 app.get("/clients/:id", getOneClient);
 
 /**
@@ -86,11 +111,14 @@ app.get("/clients/:id", getOneClient);
  *           schema:
  *             type: object
  *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *               password:
- *                 type: string
+ *                email:
+ *                  type: string
+ *                  format: email
+ *                password:
+ *                  type: string
+ *                profilePicture:
+ *                  type: string
+ *                  format: binary
  *     responses:
  *       200:
  *         description: Cliente atualizado com sucesso

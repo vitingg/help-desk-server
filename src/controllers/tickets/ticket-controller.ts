@@ -121,6 +121,38 @@ export async function getTicketsById(req: Request, res: Response) {
   }
 }
 
+export async function patchTicketAddTech(req: Request, res: Response) {
+  const { id } = req.params;
+  const { techId } = req.body;
+  const ticketId = Number(id);
+
+  try {
+    const existingService = await prisma.service.findUnique({
+      where: {
+        id: ticketId,
+      },
+    });
+
+    if (!existingService) {
+      throw new Error("Fail on search for service!");
+    }
+
+    const ticket = await prisma.service.update({
+      where: {
+        id: ticketId,
+      },
+      data: {
+        techId: techId,
+        status: "IN_PROGRESS",
+      },
+    });
+    res.status(200).json(ticket);
+  } catch (error) {
+    console.error("Fail on change activities:", error);
+    res.status(400).json({ error: "Error in change activities." });
+  }
+}
+
 export async function patchTicketStatus(req: Request, res: Response) {
   const { id } = req.params;
   const { status } = req.body;

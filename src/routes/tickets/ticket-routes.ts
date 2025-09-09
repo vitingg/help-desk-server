@@ -6,7 +6,9 @@ import {
   patchTicketStatus,
   getTicketsById,
   patchTicketAdditionalCategory,
+  patchTicketAddTech,
 } from "@controllers/tickets/ticket-controller";
+import { authorize } from "@src/middlewares/authorize";
 
 /**
  * @openapi
@@ -46,13 +48,138 @@ app.post("/services", createTicket);
  */
 app.get("/services", getTickets);
 
-// Também precisa de swagger.
+/**
+ * @openapi
+ * /services/{id}:
+ *   get:
+ *     tags:
+ *       - Service
+ *     summary: Buscar um serviço pelo ID
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Serviço retornado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Service'
+ *       404:
+ *         description: Serviço não encontrado
+ *       401:
+ *         description: Não autorizado
+ */
 app.get("/services/:id", getTicketsById);
 
-// precisa do swagger
+/**
+ * @openapi
+ * /services/{id}/change-status:
+ *   patch:
+ *     tags:
+ *       - Service
+ *     summary: Alterar o status de um serviço
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 description: Novo status do serviço
+ *                 example: "IN_PROGRESS"
+ *     responses:
+ *       200:
+ *         description: Status atualizado com sucesso
+ *       404:
+ *         description: Serviço não encontrado
+ *       401:
+ *         description: Não autorizado
+ */
 app.patch("/services/:id/change-status", patchTicketStatus);
 
+/**
+ * @openapi
+ * /services/{id}/additional-categories:
+ *   patch:
+ *     tags:
+ *       - Service
+ *     summary: Adicionar categorias adicionais a um serviço
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               categoryIds:
+ *                 type: array
+ *                 items:
+ *                   type: integer
+ *                 description: Lista de IDs de categorias adicionais
+ *                 example: [2, 3, 5]
+ *     responses:
+ *       200:
+ *         description: Categorias adicionais atribuídas com sucesso
+ *       404:
+ *         description: Serviço não encontrado
+ *       401:
+ *         description: Não autorizado
+ */
 app.patch("/services/:id/additional-categories", patchTicketAdditionalCategory);
+
+/**
+ * @openapi
+ * /services/{id}/assign:
+ *   patch:
+ *     tags:
+ *       - Service
+ *     summary: Atribuir um técnico a um serviço
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               techId:
+ *                 type: integer
+ *                 description: ID do técnico a ser atribuído
+ *                 example: 5
+ *     responses:
+ *       200:
+ *         description: Técnico atribuído com sucesso
+ *       404:
+ *         description: Serviço ou técnico não encontrado
+ *       401:
+ *         description: Não autorizado
+ */
+app.patch("/services/:id/assign", authorize([`TECH`]), patchTicketAddTech);
 
 /**
  * @openapi

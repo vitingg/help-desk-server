@@ -53,8 +53,57 @@ import { authorize } from "@src/middlewares/authorize";
  */
 app.post("/sign-in", validateUser(signInSchema), signInController);
 
+/**
+ * @openapi
+ * /sign-out:
+ *   post:
+ *     tags:
+ *       - Auth
+ *     summary: Faz logout do usuário
+ *     description: Invalida o token do usuário atual (opcional, caso você use refresh tokens).
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Logout realizado com sucesso
+ *       401:
+ *         description: Não autorizado
+ */
 app.post("/sign-out", signOutController);
 
+/**
+ * @openapi
+ * /me:
+ *   get:
+ *     tags:
+ *       - Auth
+ *     summary: Retorna o usuário autenticado
+ *     description: Recupera os dados do usuário atualmente logado com base no token JWT.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dados do usuário retornados com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 username:
+ *                   type: string
+ *                   example: "Victor Gabriel"
+ *                 email:
+ *                   type: string
+ *                   example: "victor@example.com"
+ *                 role:
+ *                   type: string
+ *                   example: "CLIENT"
+ *       401:
+ *         description: Não autorizado
+ */
 app.get("/me", authorize(), getCurrentUser);
 
 export default app;

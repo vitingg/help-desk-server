@@ -78,6 +78,31 @@ app.get("/categories", getCategories);
  */
 app.get("/categories/available-categories", clientGetCategories);
 
+/**
+ * @openapi
+ * /categories/{id}:
+ *   get:
+ *     summary: Buscar uma categoria pelo ID
+ *     tags:
+ *       - Categories
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Categoria encontrada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Category'
+ *       404:
+ *         description: Categoria não encontrada
+ *       401:
+ *         description: Não autorizado
+ */
 app.get("/categories/:id", getOneCategory);
 
 /**
@@ -101,7 +126,6 @@ app.get("/categories/:id", getOneCategory);
  *       401:
  *         description: Não autorizado
  */
-// Only change the status (true/false)
 app.put("/categories/toggle/:id", patchToggleActivities);
 
 /**

@@ -59,7 +59,31 @@ app.post("/techs", authorize(["ADMIN"]), createTech);
  */
 app.get("/techs", getTechs);
 
-// Precisa de swagger
+/**
+ * @openapi
+ * /techs/{id}:
+ *   get:
+ *     tags:
+ *       - Tech
+ *     summary: Buscar um técnico pelo ID
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Técnico encontrado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tech'
+ *       404:
+ *         description: Técnico não encontrado
+ *       401:
+ *         description: Não autorizado
+ */
 app.get("/techs/:id", getOneTech);
 
 /**
@@ -82,11 +106,14 @@ app.get("/techs/:id", getOneTech);
  *           schema:
  *             type: object
  *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *               password:
- *                 type: string
+ *                email:
+ *                  type: string
+ *                  format: email
+ *                password:
+ *                  type: string
+ *                profilePicture:
+ *                  type: string
+ *                  format: binary
  *     responses:
  *       200:
  *         description: Técnico atualizado com sucesso

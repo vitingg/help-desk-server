@@ -5,7 +5,6 @@ import {
   signInController,
   signOutController,
   getCurrentUser,
-  putUserEmailAndUsername,
 } from "@controllers/users/auth-controller";
 import { authorize } from "@src/middlewares/authorize";
 
@@ -106,7 +105,5 @@ app.post("/sign-out", signOutController);
  *         description: Não autorizado
  */
 app.get("/me", authorize(), getCurrentUser);
-
-app.put("/users/update-credentials/:id", putUserEmailAndUsername);
 
 export default app;

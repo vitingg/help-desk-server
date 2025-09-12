@@ -42,7 +42,7 @@ import { authorize } from "@src/middlewares/authorize";
  *       404:
  *         description: Cliente não encontrado.
  */
-app.post(
+app.put(
   "/change-password",
   authorize(["CLIENT", "TECH"]),
   changePasswordController

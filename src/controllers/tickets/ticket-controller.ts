@@ -14,7 +14,7 @@ export async function createTicket(req: Request, res: Response) {
   } = req.body as CreateTicketRequestDTO;
 
   if (!title || !description || !clientId || !baseCategoryId) {
-    return res.status(400).json({
+    res.status(400).json({
       error:
         "All required fields (title, description, baseCategoryId, clientId) must be provided.",
     });
@@ -29,7 +29,7 @@ export async function createTicket(req: Request, res: Response) {
       clientId,
     });
 
-    return res.status(201).json(ticket);
+    res.status(201).json(ticket);
   } catch (error) {
     console.log("Error in create ticket", error);
     return res.status(400).json({

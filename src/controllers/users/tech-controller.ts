@@ -16,7 +16,7 @@ export const createTech = async (req: Request, res: Response) => {
 
     res.status(201).json(newUser);
   } catch (error) {
-    console.log("Error in create techs");
+    console.log("Error in create tech");
     res.status(400).json({ error: "Error in tech controller" + error });
   }
 };
@@ -90,7 +90,7 @@ export const getOneTech = async (
     });
     res.status(200).json({ techs: techs });
   } catch (error) {
-    console.log("Error in search techs.");
+    console.log("Error in get one tech.");
     res.status(500).json({ error: error });
   }
 };
@@ -171,7 +171,7 @@ export const putTech = async (
 
     res.status(200).json(safeUser);
   } catch (error) {
-    console.log("Error in search client.", error);
+    console.log("Error in update tech.", error);
     res.status(400).json({ error: error });
   }
 };
@@ -191,7 +191,7 @@ export const deleteTech = async (
 
     res.status(200).json({ user });
   } catch (error) {
-    console.log(error);
+    console.log("Error in delete tech.", error);
     res.status(400).json(error);
   }
 };

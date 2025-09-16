@@ -40,7 +40,7 @@ export const getClients = async (
     });
     res.status(200).json({ clients: clients });
   } catch (error) {
-    console.log("Error in search client.");
+    console.log("Error in search clients.");
     res.status(400).json({ error: error });
   }
 };
@@ -81,7 +81,7 @@ export const getOneClient = async (
     });
     res.status(200).json({ client: client });
   } catch (error) {
-    console.log("Error in search client.");
+    console.log("Error in search one client.");
     res.status(400).json({ error: error });
   }
 };
@@ -150,9 +150,12 @@ export const putClient = async (
         profilePicture: imageUrl,
       },
     });
-    res.status(200).json({ message: "Update user!", user: updatedUser });
+
+    const { password: _, ...safeUser } = updatedUser;
+
+    res.status(200).json({ message: "Update user!", user: safeUser });
   } catch (error) {
-    console.log("Error in search client.", error);
+    console.log("Error in put client.", error);
     res.status(400).json({ error: error });
   }
 };
